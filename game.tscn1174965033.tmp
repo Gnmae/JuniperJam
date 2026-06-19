@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cxqdlgqpte2sp"]
+
+[ext_resource type="Script" uid="uid://dxnouwxt27qdf" path="res://game.gd" id="1_e2o6t"]
+[ext_resource type="Texture2D" uid="uid://5vwqa6dxrlxo" path="res://icon.svg" id="2_feb5d"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_5u5kh"]
+lightmap_size_hint = Vector2i(17, 9)
+radius = 50.0
+height = 100.0
+
+[node name="Game" type="Node2D" unique_id=1808201546]
+script = ExtResource("1_e2o6t")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=909115442]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=1942255052]
+position = Vector2(-251, -18)
+mesh = SubResource("SphereMesh_5u5kh")
+texture = ExtResource("2_feb5d")
