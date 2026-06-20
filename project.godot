@@ -23,6 +23,7 @@ buses/default_bus_layout="uid://cy7odeu1fabek"
 
 DialogueManager="*uid://c3rodes2l3gxb"
 Global="*uid://pf3j3gdagfh1"
+Constants="*uid://7f181sif718f"
 
 [display]
 
