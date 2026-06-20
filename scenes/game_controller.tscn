@@ -7,26 +7,6 @@
 script = ExtResource("1_3iy47")
 
 [node name="Cake" parent="." unique_id=1808201546 instance=ExtResource("2_soqow")]
-visible = false
 decorate_time = 1.0
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1916220910]
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=591354957]
-
-[node name="Button" type="Button" parent="CanvasLayer" unique_id=1917504180]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.5
-offset_top = -104.0
-offset_right = 200.5
-offset_bottom = 104.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "start_minigmae"
-
 [connection signal="finished" from="Cake" to="." method="_on_cake_finished"]
-[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
