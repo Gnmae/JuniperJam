@@ -491,7 +491,7 @@ func _on_speed_slider_changed(value: float) -> void:
 			dir = float(last_direction)
 		cake_top_sprite.rotation_speed = clamp(value * dir, -max_speed, max_speed)
 
-func _on_reverse_button_toggled(pressed: bool) -> void:
+func _on_reverse_button_toggled(_pressed: bool) -> void:
 	if spin_toggle_button and spin_toggle_button.button_pressed:
 		cake_top_sprite.rotation_speed = -cake_top_sprite.rotation_speed
 	else:

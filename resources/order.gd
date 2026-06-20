@@ -1,12 +1,7 @@
 class_name Order
 extends Resource
 
-const DotPlacement = preload("res://resources/dot_placement.gd")
-const PathPlacement = preload("res://resources/path_placement.gd")
-const DecorationPlacement = preload("res://resources/decoration_placement.gd")
-const TopDecorations = preload("res://resources/top_decorations.gd")
-
-@export var order_id: String = "order_001"
+@export var order_id: String = "order_01"
 @export var customer_name: String = "Customer"
 @export var cake_batter_type: String = "vanilla"
 @export var cake_base_color: Color = Color(1.0, 0.98, 0.92)
@@ -33,11 +28,10 @@ func has_frosting_paths() -> bool:
 	return frosting_paths.size() > 0
 
 # ORDER LOADING
-static func get_order(order_id: String = "order_001") -> Order:
-	var path = Constants.ORDERS.get(order_id)
-
+static func get_order(id: String = "order_01") -> Order:
+	var path = Constants.ORDERS.get(id)
 	if path and ResourceLoader.exists(path):
 		return load(path)
 	else:
-		push_error("Order not found: " + str(order_id))
+		push_error("Order not found: " + str(id))
 		return null
