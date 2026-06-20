@@ -3,9 +3,7 @@
 [ext_resource type="Script" uid="uid://cy3j832soqqvf" path="res://main_menu/main_menu.gd" id="1_3shxk"]
 [ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="2_bws42"]
 [ext_resource type="Script" uid="uid://d1ekpqyo45v1f" path="res://ui/button.gd" id="3_3shxk"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3shxk"]
-bg_color = Color(0.16862746, 0.16862746, 0.16862746, 0.6784314)
+[ext_resource type="Script" uid="uid://c1x5bcfqwhtq8" path="res://ui/h_slider.gd" id="4_bws42"]
 
 [node name="MainMenu" type="Control" unique_id=1939104754]
 layout_mode = 3
@@ -101,22 +99,67 @@ theme = ExtResource("2_bws42")
 layout_mode = 2
 alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="OptionsUI/VBoxContainer" unique_id=1111653473]
+[node name="MasterVolumeRichTextLabel" type="RichTextLabel" parent="OptionsUI/VBoxContainer" unique_id=1111653473]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_bws42")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3shxk")
-text = "Volume"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+text = "Master"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MasterVolumeHSlider" type="HSlider" parent="OptionsUI/VBoxContainer" unique_id=1377531084]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 20)
 layout_mode = 2
 size_flags_horizontal = 4
+value = 100.0
+script = ExtResource("4_bws42")
+bus_name = "Master"
+
+[node name="SoundsVolumeRichTextLabel" type="RichTextLabel" parent="OptionsUI/VBoxContainer" unique_id=2111649323]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_bws42")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+text = "Sounds"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SoundsVolumeHSlider" type="HSlider" parent="OptionsUI/VBoxContainer" unique_id=411583592]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 100.0
+script = ExtResource("4_bws42")
+bus_name = "Sounds"
+metadata/_custom_type_script = "uid://c1x5bcfqwhtq8"
+
+[node name="MusicVolumeRichTextLabel2" type="RichTextLabel" parent="OptionsUI/VBoxContainer" unique_id=93405561]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_bws42")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+text = "Music"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MusicVolumeHSlider" type="HSlider" parent="OptionsUI/VBoxContainer" unique_id=38095330]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 100.0
+script = ExtResource("4_bws42")
+bus_name = "Music"
+metadata/_custom_type_script = "uid://c1x5bcfqwhtq8"
 
 [node name="OptionsReturnButton" type="Button" parent="OptionsUI/VBoxContainer" unique_id=1538452294]
 custom_minimum_size = Vector2(200, 60)

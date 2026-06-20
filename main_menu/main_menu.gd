@@ -1,7 +1,5 @@
 extends Control
 
-func _ready() -> void:
-	%MasterVolumeHSlider.value = 100.0
 
 func _on_play_button_pressed() -> void:
 	Global.scene_manager.change_world_2d_scene("uid://cyo7hmcnjxr4o") # uid of opening scene res://opening_scene/opening_scene.tscn

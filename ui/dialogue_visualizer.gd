@@ -53,6 +53,8 @@ func advance_dialogue(next_id) -> void:
 		%RichTextLabel.text = dialogue_line.character + ": " + dialogue_line.text
 		%RichTextLabel.visible_ratio = 0.0
 		revealing = true
+		if not dialogue_line.tags.is_empty():
+			resolve_tags()
 		if not dialogue_line.responses.is_empty():
 			create_choices()
 	else:
@@ -71,6 +73,14 @@ func clear_choices() -> void:
 	waiting_for_choice = false
 	for child in %ResponseContainer.get_children():
 		child.queue_free()
+
+func resolve_tags() -> void:
+	for tag in dialogue_line.tags:
+		var tag_contents = tag.split("=")
+		var tag_type = tag_contents[0]
+		if tag_type == "bg_change":
+			var bg_uid = tag_contents[1] # "bg_change=PackedTexture2D uid"
+			%BackgroundTextureRect.texture = load(bg_uid)
 
 func end_scene(_resource) -> void:
 	Global.scene_manager.change_world_2d_scene("uid://cr6jrn8uade0l") # Game Controller scene
