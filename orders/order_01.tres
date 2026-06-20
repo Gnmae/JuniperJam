@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="Order" format=3 uid="uid://1wc2u0di81mg"]
+
+[ext_resource type="Script" uid="uid://bt5w2qxhur6ni" path="res://resources/order.gd" id="1_tanqh"]
+[ext_resource type="Script" uid="uid://cswvdqpj5qvt1" path="res://resources/decoration_placement.gd" id="2_xit6o"]
+[ext_resource type="Script" uid="uid://bpmiolsmmanfw" path="res://resources/dot_placement.gd" id="3_usqo1"]
+[ext_resource type="Script" uid="uid://b2kb2b7ba6qri" path="res://resources/path_placement.gd" id="4_3njm6"]
+[ext_resource type="Script" uid="uid://cdr7mm2qje1o5" path="res://resources/top_decorations.gd" id="5_xug0e"]
+
+[sub_resource type="Resource" id="Resource_xit6o"]
+script = ExtResource("2_xit6o")
+id = "candle"
+position = Vector2(-50, 10)
+metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
+
+[sub_resource type="Resource" id="Resource_usqo1"]
+script = ExtResource("2_xit6o")
+id = "candle"
+position = Vector2(20, 10)
+metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
+
+[sub_resource type="Resource" id="Resource_3njm6"]
+script = ExtResource("2_xit6o")
+id = "candle"
+position = Vector2(50, 10)
+metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
+
+[sub_resource type="Resource" id="Resource_xug0e"]
+script = ExtResource("5_xug0e")
+decorations = Array[ExtResource("2_xit6o")]([SubResource("Resource_xit6o"), SubResource("Resource_usqo1"), SubResource("Resource_3njm6")])
+metadata/_custom_type_script = "uid://cdr7mm2qje1o5"
+
+[resource]
+script = ExtResource("1_tanqh")
+order_id = "order_01"
+top_decorations = SubResource("Resource_xug0e")
+metadata/_custom_type_script = "uid://bt5w2qxhur6ni"

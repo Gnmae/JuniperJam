@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="prototype"
-run/main_scene="res://cake.tscn"
+run/main_scene="res://scenes/cake.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Constants="*uid://7f181sif718f"
 
 [display]
 
@@ -26,4 +30,5 @@ window/stretch/aspect="expand"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"

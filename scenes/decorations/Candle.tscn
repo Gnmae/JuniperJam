@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c5cd61pqu2qur"]
+
+[ext_resource type="Texture2D" uid="uid://ce2n1aiib30pp" path="res://assets/sprites/candle_top.png" id="1_uk6mf"]
+
+[node name="Candle" type="Node2D" unique_id=1916171119]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1527844716]
+scale = Vector2(0.21875003, 0.21875003)
+texture = ExtResource("1_uk6mf")

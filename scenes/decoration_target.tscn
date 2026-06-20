@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dqvk10pyet8q3"]
+
+[ext_resource type="Script" uid="uid://by0odjn13ceeh" path="res://scenes/decoration_target.gd" id="1_pjjkr"]
+[ext_resource type="Shader" uid="uid://dsa4n8i2fk4wp" path="res://assets/shaders/dashed_outline.gdshader" id="1_u8yce"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u8yce"]
+shader = ExtResource("1_u8yce")
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/inner_stroke_thickness = 2.625
+shader_parameter/inner_stroke_opacity = 0.375
+shader_parameter/inside_opacity = 0.0
+shader_parameter/frequency = 8.0
+shader_parameter/phase_speed = 1.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nwmxf"]
+load_path = "res://.godot/imported/plate.png-b65d248eb5571b72f81546eb64822c97.ctex"
+
+[node name="DecorationTarget" type="Node2D" unique_id=178301590]
+script = ExtResource("1_pjjkr")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1864245012]
+z_index = 2
+material = SubResource("ShaderMaterial_u8yce")
+scale = Vector2(0.375, 0.375)
+texture = SubResource("CompressedTexture2D_nwmxf")

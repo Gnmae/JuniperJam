@@ -1,0 +1,519 @@
+extends Node2D
+
+@export var spin_time: float = 5.0
+@export var decorate_time: float = 20.0
+@export var spin_speed_multiplier: float = 0.1
+@export var min_speed: float = 10.0
+@export var max_speed: float = 100.0
+
+# Frosting Settings
+@export var frosting_color: Color = Color(1.0, 0.85, 0.7, 1.0)
+@export var dollop_spacing: float = 18.0
+@export var max_frosting_dollops: int = 120
+
+# Frosting Path Accuracy
+@export var frosting_tolerance: float = 15.0
+
+# Order System
+@export var current_order: Order
+@export var target_color: Color = Color(1.0, 0.85, 0.3, 0.6)
+
+# Node References
+@onready var cake_top_sprite: Sprite2D = $CakeTop
+@onready var plate: Sprite2D = $Plate
+@onready var plate_area_2d: Area2D = $PlateArea2D
+@onready var hand_sprite: Sprite2D = $PlateArea2D/HandSprite
+
+@onready var spin_toggle_button: CheckButton = $SpinControls/VBoxContainer/SpinToggleButton
+@onready var speed_v_slider: VSlider = $SpinControls/VBoxContainer/HBoxContainer/SpeedVSlider
+@onready var speed_label: Label = $SpinControls/VBoxContainer/HBoxContainer/VBoxContainer/SpeedLabel
+@onready var reverse_button: CheckButton = $SpinControls/VBoxContainer/ReverseButton
+
+@onready var clock_sprite: Sprite2D = $TimerControls/HBoxContainer/ClockSprite
+@onready var timer_progress_bar: ProgressBar = $TimerControls/HBoxContainer/TimerProgressBar
+@onready var time_label: Label = $TimerControls/HBoxContainer/TimeLabel
+@onready var phase_label: Label = $DebugControls/VBoxContainer/PhaseLabel
+
+# Containers
+@onready var frosting_container: Node2D = $CakeTop/FrostingContainer
+@onready var decoration_container: Node2D = $CakeTop/DecorationContainer
+
+@onready var frosting_tool_button: TextureButton = $DecorationControls/HBoxContainer/FrostingToolButton
+@onready var frosting_pointer: Sprite2D = $FrostingPointer
+
+# Game Variables
+var decorate_timer: float = 0.0
+var original_clock_position: Vector2 = Vector2.ZERO
+var is_shaking_clock: bool = false
+
+var last_mouse_pos: Vector2 = Vector2.ZERO
+var last_active_speed: float = 10.0
+var last_direction: int = 1
+var is_dragging: bool = false
+var mouse_click: bool = false
+var drag_offset: float = 0.0
+
+# State
+var state: STATE = STATE.INITIAL
+enum STATE { INITIAL, SPIN, DECORATE, DONE }
+
+signal finished
+
+# Decoration System
+var decoration_targets: Array[Node] = []
+
+# Frosting Dollop System
+var last_dollop_position: Vector2 = Vector2.ZERO
+var dollop_count: int = 0
+var is_drawing_frosting: bool = false
+
+# Placement System
+var selected_decoration: Node = null
+var is_placing_decoration: bool = false
+
+var is_frosting_tool_active: bool = false
+
+# Frosting Path Guide
+var _guide_lines: Array[Line2D] = []
+var _baked_segments: Array = []
+var _dollop_accuracy_sum: float = 0.0
+var _dollop_accuracy_count: int = 0
+var frosting_accuracy: float = 0.0
+
+func _ready() -> void:
+	if current_order == null:
+		current_order = Order.get_order("order_02")
+	
+	setup_containers()
+	setup_ui()
+	
+	if frosting_pointer:
+		frosting_pointer.visible = false
+	
+	if plate_area_2d:
+		plate_area_2d.input_event.connect(_on_plate_area_2d_input_event)
+	
+	print("frosting_tool_button: ", frosting_tool_button)
+	print("frosting_pointer: ", frosting_pointer)
+	print("state on ready: ", state)
+	
+	state = STATE.SPIN
+	update_phase_label()
+	spin_enter()
+
+func setup_containers() -> void:
+	if not frosting_container:
+		frosting_container = Node2D.new()
+		frosting_container.name = "FrostingContainer"
+		cake_top_sprite.add_child(frosting_container)
+	
+	if not decoration_container:
+		decoration_container = Node2D.new()
+		decoration_container.name = "DecorationContainer"
+		cake_top_sprite.add_child(decoration_container)
+
+func setup_ui() -> void:
+	if speed_v_slider:
+		speed_v_slider.min_value = min_speed
+		speed_v_slider.max_value = max_speed
+		speed_v_slider.value = clamp(abs(cake_top_sprite.rotation_speed if cake_top_sprite else 0), min_speed, max_speed)
+		speed_label.text = str(int(speed_v_slider.value))
+	if frosting_tool_button:
+		frosting_tool_button.toggled.connect(_on_frosting_tool_toggled)
+	if speed_v_slider:
+		speed_v_slider.value_changed.connect(_on_speed_slider_changed)
+	if reverse_button:
+		reverse_button.toggled.connect(_on_reverse_button_toggled)
+	if spin_toggle_button:
+		spin_toggle_button.toggled.connect(_on_spin_toggle_changed)
+
+# PHASE LABEL, used for debugging rn
+func update_phase_label() -> void:
+	if not phase_label:
+		return
+	
+	match state:
+		STATE.INITIAL:
+			phase_label.text = "INITIALIZING..."
+			phase_label.modulate = Color.WHITE
+		STATE.SPIN:
+			phase_label.text = "SPIN PHASE"
+			phase_label.modulate = Color(0.4, 0.8, 1.0)
+		STATE.DECORATE:
+			phase_label.text = "DECORATE PHASE"
+			phase_label.modulate = Color(1.0, 0.75, 0.2)
+		STATE.DONE:
+			phase_label.text = "CAKE COMPLETE!"
+			phase_label.modulate = Color(0.3, 1.0, 0.4)
+		_:
+			phase_label.text = "UNKNOWN"
+
+# INPUT & PROCESS
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.is_pressed():
+		is_dragging = false
+		mouse_click = false
+		if hand_sprite:
+			hand_sprite.visible = false
+		if plate.get_parent() == plate_area_2d:
+			plate.reparent($"..", true)
+		
+		if selected_decoration:
+			_on_decoration_placed()
+
+	if state != STATE.DECORATE:
+		return
+
+	# Frosting
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.is_pressed() and not is_placing_decoration and is_frosting_tool_active:
+			start_frosting()
+		elif not event.is_pressed():
+			end_frosting()
+
+	elif event is InputEventMouseMotion and is_drawing_frosting:
+		place_frosting_dollops()
+
+func _on_plate_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		if spin_toggle_button and spin_toggle_button.button_pressed:
+			return
+		if is_frosting_tool_active:
+			return
+		mouse_click = true
+		is_dragging = true
+		if hand_sprite:
+			hand_sprite.visible = true
+		var mouse_angle := (get_global_mouse_position() - plate_area_2d.global_position).angle()
+		drag_offset = plate_area_2d.rotation - mouse_angle
+
+func _process(delta: float) -> void:
+	if spin_toggle_button and spin_toggle_button.button_pressed:
+		plate.rotation += deg_to_rad(cake_top_sprite.rotation_speed * delta)
+	elif is_dragging and mouse_click:
+		var previous_rotation := plate_area_2d.rotation
+		var mouse_angle := (get_global_mouse_position() - plate_area_2d.global_position).angle()
+		plate_area_2d.rotation = mouse_angle + drag_offset
+		if plate.get_parent() != plate_area_2d:
+			plate.reparent(plate_area_2d, true)
+		var delta_rotation := plate_area_2d.rotation - previous_rotation
+		cake_top_sprite.rotation += delta_rotation
+
+	if state == STATE.SPIN:
+		spin_update(delta)
+	elif state == STATE.DECORATE:
+		decorate_update(delta)
+
+	# Clock Shake
+	if is_shaking_clock and clock_sprite:
+		var shake_amount = 3.0
+		var shake_speed = 25.0
+		clock_sprite.position = original_clock_position + Vector2(
+			sin(Time.get_ticks_msec() / 1000.0 * shake_speed) * shake_amount,
+			cos(Time.get_ticks_msec() / 1000.0 * shake_speed * 1.3) * shake_amount * 0.6
+		)
+
+	if is_frosting_tool_active and frosting_pointer:
+		frosting_pointer.global_position = get_global_mouse_position()
+
+func spin_update(_delta: float) -> void:
+	last_mouse_pos = get_global_mouse_position()
+
+# FROSTING GUIDE LINES
+func _setup_frosting_guide() -> void:
+	for l in _guide_lines:
+		if is_instance_valid(l):
+			l.queue_free()
+	_guide_lines.clear()
+	_baked_segments.clear()
+	_dollop_accuracy_sum = 0.0
+	_dollop_accuracy_count = 0
+
+	print("_setup_frosting_guide called")
+	print("current_order: ", current_order)
+
+	if current_order == null:
+		return
+
+	var top_decs = current_order.get_top_decorations()
+	if top_decs == null:
+		print("no top_decorations found")
+		return
+
+	print("frosting_paths count: ", top_decs.frosting_paths.size())
+
+	for path in top_decs.frosting_paths:
+		print("path points count: ", path.points.size())
+		print("path origin: ", path.origin)
+		if path.points.size() < 2:
+			continue
+
+		var world_pts := PackedVector2Array()
+		for p in path.points:
+			world_pts.append(path.origin + p)
+
+		var line := Line2D.new()
+		line.name = "FrostingGuide"
+		line.points = world_pts
+		if path.closed and world_pts.size() > 0:
+			line.add_point(world_pts[0])
+		line.width = path.width
+		line.default_color = Color(path.color.r, path.color.g, path.color.b, 0.4)
+		line.z_index = 2
+		cake_top_sprite.add_child(line)
+		_guide_lines.append(line)
+		print("Line2D added to cake_top_sprite, points: ", line.points.size())
+
+		var segs := PackedVector2Array()
+		var count := world_pts.size()
+		var limit := count - 1 if not path.closed else count
+		for i in range(limit):
+			segs.append(world_pts[i])
+			segs.append(world_pts[(i + 1) % count])
+		_baked_segments.append(segs)
+
+# FROSTING ACCURACY
+func _distance_to_all_guides(cake_local_pos: Vector2) -> float:
+	var best := INF
+	for segs: PackedVector2Array in _baked_segments:
+		var i := 0
+		while i + 1 < segs.size():
+			best = min(best, _point_segment_distance(cake_local_pos, segs[i], segs[i + 1]))
+			i += 2
+	return best
+
+func _point_segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
+	var ab := b - a
+	var len_sq := ab.dot(ab)
+	if len_sq == 0.0:
+		return p.distance_to(a)
+	var t: float = clamp((p - a).dot(ab) / len_sq, 0.0, 1.0)
+	return p.distance_to(a + ab * t)
+
+func _record_dollop_accuracy(cake_local_pos: Vector2) -> void:
+	if _baked_segments.is_empty():
+		return
+	var dist := _distance_to_all_guides(cake_local_pos)
+	var score: float = clamp(1.0 - dist / frosting_tolerance, 0.0, 1.0)
+	_dollop_accuracy_sum += score
+	_dollop_accuracy_count += 1
+
+# FROSTING DOLLOP SYSTEM
+func start_frosting() -> void:
+	is_drawing_frosting = true
+	last_dollop_position = cake_top_sprite.to_local(get_global_mouse_position())
+	dollop_count = 0
+	place_single_dollop(last_dollop_position)
+
+func place_frosting_dollops() -> void:
+	if not is_drawing_frosting or dollop_count >= max_frosting_dollops or not frosting_container:
+		return
+	
+	var current_pos: Vector2 = cake_top_sprite.to_local(get_global_mouse_position())
+	var distance: float = last_dollop_position.distance_to(current_pos)
+	
+	if distance >= dollop_spacing:
+		var direction: Vector2 = (current_pos - last_dollop_position).normalized()
+		var steps: int = int(distance / dollop_spacing)
+		
+		for i in range(1, steps + 1):
+			if dollop_count >= max_frosting_dollops:
+				break
+			var pos: Vector2 = last_dollop_position + direction * dollop_spacing * i
+			place_single_dollop(pos)
+		
+		last_dollop_position = last_dollop_position + direction * dollop_spacing * steps
+
+func place_single_dollop(pos: Vector2) -> void:
+	var scene_path = Constants.DECORATION_SCENES.frosting_dollop
+	if scene_path == "":
+		return
+	var scene = load(scene_path)
+	if not scene:
+		return
+	var dollop: Node = scene.instantiate()
+	frosting_container.add_child(dollop)
+	dollop.position = pos
+	dollop.modulate = frosting_color
+	dollop_count += 1
+	_record_dollop_accuracy(pos)
+
+func end_frosting() -> void:
+	is_drawing_frosting = false
+
+# DECORATION PLACEMENT
+func start_placing_decoration(decoration_scene_path: String) -> void:
+	if selected_decoration:
+		selected_decoration.queue_free()
+	
+	is_frosting_tool_active = false
+	if frosting_tool_button:
+		frosting_tool_button.button_pressed = false
+	if frosting_pointer:
+		frosting_pointer.visible = false
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+	
+	var scene = load(decoration_scene_path)
+	if scene:
+		selected_decoration = scene.instantiate()
+		if decoration_container:
+			decoration_container.add_child(selected_decoration)
+		is_placing_decoration = true
+
+func _on_decoration_placed() -> void:
+	if not selected_decoration:
+		return
+	snap_to_nearest_target(selected_decoration)
+	selected_decoration = null
+	is_placing_decoration = false
+
+func snap_to_nearest_target(dec: Node) -> void:
+	for target in decoration_targets:
+		if is_instance_valid(target) and dec.global_position.distance_to(target.global_position) < 70:
+			dec.global_position = target.global_position
+			dec.rotation = target.rotation
+			dec.scale = target.scale
+			target.visible = false
+			return
+
+# STATE MACHINE
+func spin_enter() -> void:
+	update_phase_label()
+	await get_tree().create_timer(spin_time).timeout
+	state = STATE.DECORATE
+	decorate_enter()
+
+func decorate_enter() -> void:
+	print("decorate_enter called, state=", state)
+	update_phase_label()
+	decorate_timer = decorate_time
+	original_clock_position = clock_sprite.position
+	is_shaking_clock = false
+	is_frosting_tool_active = false
+	if frosting_tool_button:
+		frosting_tool_button.button_pressed = false
+	if frosting_pointer:
+		frosting_pointer.visible = false
+	
+	timer_progress_bar.max_value = decorate_time
+	timer_progress_bar.value = decorate_time
+	time_label.text = str(int(decorate_time))
+	update_timer_color(1.0)
+	
+	spawn_decoration_targets()
+	_setup_frosting_guide()
+	state = STATE.DECORATE
+
+func decorate_update(delta: float) -> void:
+	if state != STATE.DECORATE:
+		return
+	decorate_timer -= delta
+	timer_progress_bar.value = decorate_timer
+	time_label.text = str(max(0, int(decorate_timer)))
+	
+	var progress: float = decorate_timer / decorate_time
+	update_timer_color(progress)
+	
+	if progress < 0.25 and not is_shaking_clock:
+		start_clock_shake()
+	elif progress >= 0.25 and is_shaking_clock:
+		stop_clock_shake()
+	
+	if decorate_timer <= 0:
+		decorate_timer = 0
+		state = STATE.DONE
+		done_enter()
+
+func done_enter() -> void:
+	if _dollop_accuracy_count > 0:
+		frosting_accuracy = _dollop_accuracy_sum / float(_dollop_accuracy_count)
+	else:
+		frosting_accuracy = 0.0
+	print("Frosting accuracy: ", frosting_accuracy)
+	update_phase_label()
+	finished.emit()
+
+func update_timer_color(progress: float) -> void:
+	var color: Color
+	if progress > 0.6:
+		color = Color(0.2, 0.8, 0.3)
+	elif progress > 0.3:
+		color = Color(1.0, 0.85, 0.2)
+	else:
+		color = Color(0.9, 0.2, 0.2)
+	timer_progress_bar.get("theme_override_styles/fill").bg_color = color
+
+func start_clock_shake() -> void:
+	is_shaking_clock = true
+
+func stop_clock_shake() -> void:
+	is_shaking_clock = false
+	if clock_sprite:
+		clock_sprite.position = original_clock_position
+
+# DECORATION TARGETS
+func spawn_decoration_targets() -> void:
+	for t in decoration_targets:
+		if is_instance_valid(t):
+			t.queue_free()
+	decoration_targets.clear()
+	
+	if current_order == null:
+		return
+	var top = current_order.get_top_decorations()
+	for dec in top.decorations:
+		var target = Decoration.instantiate_decoration_target()
+		cake_top_sprite.add_child(target)
+		target.setup(dec)
+		target.position = dec.position
+		target.rotation_degrees = dec.rotation_degrees
+		target.scale = dec.scale
+		decoration_targets.append(target)
+
+
+# UI CALLBACKS
+func _on_frosting_tool_toggled(pressed: bool) -> void:
+	print("frosting toggled: ", pressed)
+	is_frosting_tool_active = pressed
+	if frosting_pointer:
+		frosting_pointer.visible = pressed
+		frosting_pointer.z_index = 2
+	if not pressed:
+		end_frosting()
+
+func _on_speed_slider_changed(value: float) -> void:
+	last_active_speed = value
+	if speed_label:
+		speed_label.text = str(int(value))
+	if spin_toggle_button and spin_toggle_button.button_pressed:
+		var dir: float = sign(cake_top_sprite.rotation_speed)
+		if dir == 0:
+			dir = float(last_direction)
+		cake_top_sprite.rotation_speed = clamp(value * dir, -max_speed, max_speed)
+
+func _on_reverse_button_toggled(pressed: bool) -> void:
+	if spin_toggle_button and spin_toggle_button.button_pressed:
+		cake_top_sprite.rotation_speed = -cake_top_sprite.rotation_speed
+	else:
+		last_direction = -last_direction
+
+func _on_spin_toggle_changed(pressed: bool) -> void:
+	if pressed:
+		cake_top_sprite.rotation_speed = last_active_speed * last_direction
+		if speed_label:
+			speed_label.text = str(int(last_active_speed))
+	else:
+		last_active_speed = abs(cake_top_sprite.rotation_speed)
+		last_direction = sign(cake_top_sprite.rotation_speed)
+		if last_direction == 0:
+			last_direction = 1
+		cake_top_sprite.rotation_speed = 0.0
+		if speed_label:
+			speed_label.text = "0"
+
+# HELPERS
+func clear_frosting() -> void:
+	if frosting_container:
+		for child in frosting_container.get_children():
+			child.queue_free()
+	dollop_count = 0
