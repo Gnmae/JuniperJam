@@ -15,7 +15,7 @@ enum STATE {INITIAL, SPIN, DECORATE, DONE}
 
 signal finished
 
-func _ready() -> void:
+func start_minigame() -> void:
 	state = STATE.SPIN
 	spin_enter()
 
