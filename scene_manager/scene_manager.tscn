@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bvssi4u8es6pw"]
+
+[ext_resource type="Script" uid="uid://dlpyqse32i3mg" path="res://scene_manager/scene_manager.gd" id="1_6w36t"]
+[ext_resource type="Script" uid="uid://ccedm5b0qyu4v" path="res://scene_manager/sound_manager.gd" id="2_ms3da"]
+[ext_resource type="AudioStream" uid="uid://djp6wd02terb5" path="res://assets/sounds/keystroke_sound.wav" id="2_u1b27"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4sjmi"]
+random_pitch = 1.122462
+random_volume_offset_db = 1.0
+streams_count = 1
+stream_0/stream = ExtResource("2_u1b27")
+
+[node name="SceneManager" type="Node" unique_id=1255692518 node_paths=PackedStringArray("world_2d", "ui")]
+script = ExtResource("1_6w36t")
+world_2d = NodePath("World2D")
+ui = NodePath("UI")
+
+[node name="World2D" type="Node2D" parent="." unique_id=868434351]
+
+[node name="UI" type="Control" parent="." unique_id=518815914]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=647671182]
+script = ExtResource("2_ms3da")
+
+[node name="KeystrokeSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1219575738]
+stream = SubResource("AudioStreamRandomizer_4sjmi")
+bus = &"Sounds"
