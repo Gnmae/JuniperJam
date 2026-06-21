@@ -39,6 +39,7 @@ script = ExtResource("1_yl5fd")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=909115442]
 
 [node name="Plate" type="Sprite2D" parent="." unique_id=181718520]
+texture_filter = 1
 scale = Vector2(8.34375, 8.34375)
 texture = ExtResource("2_icyrn")
 

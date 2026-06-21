@@ -97,6 +97,7 @@ func _ready() -> void:
 	print("frosting_pointer: ", frosting_pointer)
 	print("state on ready: ", state)
 	
+	
 	state = STATE.SPIN
 	update_phase_label()
 	spin_enter()

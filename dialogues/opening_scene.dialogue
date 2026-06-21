@@ -9,9 +9,9 @@ Master Baker Branch Manager: We here at Master Baker are happy to bring you on a
 Master Baker Branch Manager: Anyways, as you likely already know, this is just one of thousands of Master Baker branches all across the world.
 Master Baker Branch Manager: You'll be participating within your own stall to decorate a cake so amazing, it stuns not just the Master Baker Judges, but also our world-wide audience!
 Master Baker Candidate(You): How do I start?! Where do I go!?
-# order.png bg change
+	# order.png bg change
 Master Baker Branch Manager: Our staff will direct you into your stall! After that, a screen will pop up, showing you the cake design you are meant to replicate. [#bg_change=uid://dsnxwa57rymfp]
-# spin.png bg change
+	# spin.png bg change
 Master Baker Branch Manager: You will then spin and decorate your cake within a limited amount of time! [#bg_change=uid://dpy0coc0h072d]
 	# finished.png bg change
 Master Baker Branch Manager: You'll also be graded heavily on how fast your cake spun. [#bg_change=uid://jg5br05pil60]

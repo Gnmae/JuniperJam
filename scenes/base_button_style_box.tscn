@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://c3hch7k18yobk"]
+
+[ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="1_4d1qg"]
+[ext_resource type="Script" uid="uid://drqqkibeq8jrq" path="res://scripts/base_button_style_box.gd" id="2_qyufq"]
+[ext_resource type="Script" uid="uid://drthbisi3ut1" path="res://scripts/ui/ui_style_box.gd" id="3_qyufq"]
+
+[node name="BaseButtonStyleBox" type="Button" unique_id=328121654 node_paths=PackedStringArray("ui_style_box")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_4d1qg")
+script = ExtResource("2_qyufq")
+ui_style_box = NodePath("UIStyleBox")
+metadata/_custom_type_script = "uid://d1ekpqyo45v1f"
+
+[node name="UIStyleBox" type="Control" parent="." unique_id=662033304]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_qyufq")
+polygon_wiggle_range = 5.0
+active = false
+metadata/_custom_type_script = "uid://drthbisi3ut1"
+
+[node name="Polygon2D" type="Polygon2D" parent="UIStyleBox" unique_id=1620048028]
+color = Color(0.45490196, 0.6745098, 0.45490196, 1)
