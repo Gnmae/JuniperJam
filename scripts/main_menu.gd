@@ -1,5 +1,7 @@
 extends Control
 
+@export var transition_time : float = 0.1
+
 @onready var new_game_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/NewGame
 @onready var continue_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/Continue
 @onready var options_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/OptionsButton
@@ -9,7 +11,7 @@ extends Control
 @onready var no_new_game_button_2: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal/NoNewGameButton2
 @onready var menu_buttons_container: VBoxContainer = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer
 
-@onready var main_menu_header: Label = $MainMenuUI/VBoxContainer/Label
+@onready var main_menu_header: RichTextLabel = $MainMenuUI/VBoxContainer/Label
 
 func _ready() -> void:
 	overwrite_save_modal.hide()

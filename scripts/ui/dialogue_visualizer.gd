@@ -42,7 +42,7 @@ func _process(delta: float) -> void:
 			revealing = false
 		keystrokes += 1
 		if keystrokes >= characters_per_keystroke:
-			Global.sound_manager.play("KeystrokeSound")
+			#Global.sound_manager.play("KeystrokeSound")
 			keystrokes = 0
 
 func advance_dialogue(next_id) -> void:
