@@ -453,11 +453,9 @@ func _on_next_button_pressed() -> void:
 		decorate_timer = 0
 		state = STATE.DONE
 		done_enter()
-	# todo, use scenemanager
 	elif state == STATE.DONE:
 		Global.scene_manager.change_world_2d_scene("")
 		Global.scene_manager.change_ui_scene("res://scenes/side_decoration.tscn")
-		#get_tree().change_scene_to_file("res://scenes/side_decoration.tscn")
 
 func _save_decorations_to_session() -> void:
 	if GameSession.session_result == null:
