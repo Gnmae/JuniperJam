@@ -97,7 +97,7 @@ func _ready() -> void:
 		plate_area_2d.input_event.connect(_on_plate_area_2d_input_event)
 	if next_button:
 		next_button.text = "Finish Early"
-		next_button.pressed.connect(_on_next_button_pressed)
+		#next_button.pressed.connect(_on_next_button_pressed)
 
 	state = STATE.INITIAL
 	update_phase_label()

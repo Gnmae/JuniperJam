@@ -105,12 +105,14 @@ grow_horizontal = 2
 custom_minimum_size = Vector2(600, 20)
 layout_mode = 2
 size_flags_horizontal = 6
+mouse_filter = 1
 theme_override_styles/fill = SubResource("StyleBoxFlat_timer")
 value = 100.0
 show_percentage = false
 
 [node name="TimeLabel" type="Label" parent="UI/TimerControls" unique_id=234744090]
 layout_mode = 2
+mouse_filter = 1
 text = "30"
 
 [node name="DecorationControls" type="HBoxContainer" parent="UI" unique_id=323652242]

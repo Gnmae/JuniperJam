@@ -141,7 +141,7 @@ func _input(event: InputEvent) -> void:
 func _start_frosting() -> void:
 	is_drawing_frosting = true
 	last_dollop_position = _mouse_to_strip_pos()
-	_place_single_dollop(last_dollop_position)
+	#_place_single_dollop(last_dollop_position)
 
 func _end_frosting() -> void:
 	is_drawing_frosting = false
@@ -150,15 +150,28 @@ func _place_frosting_dollops() -> void:
 	if not is_drawing_frosting or dollop_count >= max_frosting_dollops:
 		return
 	var current_pos := _mouse_to_strip_pos()
-	var distance := last_dollop_position.distance_to(current_pos)
+	var delta := _least_distance_between(last_dollop_position, current_pos)
+	var distance = delta.length()
 	if distance >= dollop_spacing:
-		var direction := (current_pos - last_dollop_position).normalized()
+		var direction := delta.normalized()
 		var steps := int(distance / dollop_spacing)
 		for i in range(1, steps + 1):
 			if dollop_count >= max_frosting_dollops:
 				break
+			var pos := last_dollop_position + direction * dollop_spacing * i
+			pos.x = fposmod(pos.x, strip_width)
 			_place_single_dollop(last_dollop_position + direction * dollop_spacing * i)
-		last_dollop_position = last_dollop_position + direction * dollop_spacing * steps
+		var last_pos := last_dollop_position + direction * dollop_spacing * steps
+		last_pos.x = fposmod(last_pos.x, strip_width)
+		last_dollop_position = last_pos
+
+func _least_distance_between(a: Vector2, b: Vector2) -> Vector2:
+	var dx := b.x - a.x
+	if dx > strip_width * 0.5:
+		dx -= strip_width
+	elif dx < -strip_width * 0.5:
+		dx += strip_width
+	return Vector2(dx, b.y-a.y)
 
 func _place_single_dollop(pos: Vector2) -> void:
 	var scene_path = Constants.DECORATION_SCENES.frosting_dollop
