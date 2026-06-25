@@ -78,4 +78,6 @@ func _on_confirm_button_pressed() -> void:
 		result.set("cake_base_id", data.get("id", ""))
 		result.set("cake_base_data", data)
 	
-	get_tree().change_scene_to_file(Constants.SCENE_PATHS.spin_speed)
+	Global.scene_manager.change_world_2d_scene("")
+	Global.scene_manager.change_ui_scene(Constants.SCENE_PATHS.spin_speed)
+	#get_tree().change_scene_to_file(Constants.SCENE_PATHS.spin_speed)

@@ -55,6 +55,7 @@ func _on_continue_button_pressed() -> void:
 func _on_options_button_pressed() -> void:
 	await get_tree().create_timer(transition_time).timeout
 	%MainMenuUI.hide()
+	$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".hide()
 	%OptionsUI.show()
 
 func _on_quit_button_pressed() -> void:
@@ -64,4 +65,5 @@ func _on_quit_button_pressed() -> void:
 func _on_options_return_button_pressed() -> void:
 	await get_tree().create_timer(transition_time).timeout
 	%MainMenuUI.show()
+	$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".show()
 	%OptionsUI.hide()
