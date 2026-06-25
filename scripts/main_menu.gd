@@ -12,6 +12,7 @@ extends Control
 @onready var menu_buttons_container: VBoxContainer = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer
 
 @onready var main_menu_header: RichTextLabel = $MainMenuUI/VBoxContainer/Label
+@onready var main_menu_header_background: UIStyleBox = $HeaderBackground
 
 func _ready() -> void:
 	overwrite_save_modal.hide()
@@ -25,6 +26,7 @@ func _on_new_game_pressed() -> void:
 		
 		main_menu_header.hide()
 		menu_buttons_container.hide()
+		main_menu_header_background.hide()
 	else:
 		_start_new_game()
 
@@ -35,6 +37,7 @@ func _on_yes_new_game_button_pressed() -> void:
 func _on_no_new_game_button_2_pressed() -> void:
 	main_menu_header.show()
 	menu_buttons_container.show()
+	main_menu_header_background.show()
 	
 	overwrite_save_modal.hide()
 
@@ -55,7 +58,7 @@ func _on_continue_button_pressed() -> void:
 func _on_options_button_pressed() -> void:
 	await get_tree().create_timer(transition_time).timeout
 	%MainMenuUI.hide()
-	$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".hide()
+	main_menu_header_background.hide()
 	%OptionsUI.show()
 
 func _on_quit_button_pressed() -> void:
@@ -65,5 +68,5 @@ func _on_quit_button_pressed() -> void:
 func _on_options_return_button_pressed() -> void:
 	await get_tree().create_timer(transition_time).timeout
 	%MainMenuUI.show()
-	$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".show()
+	main_menu_header_background.show()
 	%OptionsUI.hide()

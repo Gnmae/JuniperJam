@@ -111,7 +111,7 @@ text = "Yes"
 layout_mode = 2
 text = "No"
 
-[node name="MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox" type="Control" parent="." unique_id=827390821]
+[node name="HeaderBackground" type="Control" parent="." unique_id=827390821]
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -125,7 +125,7 @@ polygon_wiggle_range = 5.0
 polygon_wiggle_speed = 0.2
 metadata/_custom_type_script = "uid://drthbisi3ut1"
 
-[node name="MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton_UIStyleBox#Polygon2D" type="Polygon2D" parent="MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox" unique_id=81850344]
+[node name="HeaderBackgroundPolygon" type="Polygon2D" parent="HeaderBackground" unique_id=81850344]
 position = Vector2(145.00002, 80.00001)
 scale = Vector2(4.585, 2.005)
 color = Color(0.5686275, 0.20392157, 0.23137255, 0.73333335)
