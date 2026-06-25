@@ -85,4 +85,15 @@ func resolve_tags() -> void:
 			%BackgroundTextureRect.texture = load(bg_uid)
 
 func end_scene(_resource) -> void:
-	Global.scene_manager.change_world_2d_scene("uid://cr6jrn8uade0l") # Game Controller scene
+	GameSession.set_flag("opening_scene_done")
+
+	var order := Order.get_order("order_01")
+	if order == null:
+		push_error("DialogueVisualizer: failed to load order")
+		return
+	GameSession.start_order(order)
+	Global.scene_manager.change_world_2d_scene("")
+	Global.scene_manager.change_ui_scene(Constants.SCENE_PATHS["order_ticket"])
+
+func _on_debug_skip_button_pressed() -> void:
+	end_scene(null)

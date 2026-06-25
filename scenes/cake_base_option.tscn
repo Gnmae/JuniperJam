@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://bkc4bjmjqe25g"]
+
+[ext_resource type="Shader" uid="uid://4vronj6sq6pu" path="res://assets/shaders/outline.gdshader" id="1_go0nt"]
+[ext_resource type="Script" uid="uid://cifwmgrtvst4u" path="res://scripts/cake_base_option.gd" id="1_h10cj"]
+[ext_resource type="Texture2D" uid="uid://bm26e8phsmuyd" path="res://assets/sprites/cake_base.png" id="2_h10cj"]
+[ext_resource type="Texture2D" uid="uid://dprfawt0bbybh" path="res://assets/sprites/cake_selection_arrow.png" id="4_rk5le"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ai34y"]
+shader = ExtResource("1_go0nt")
+shader_parameter/enabled = false
+shader_parameter/outline_color = Color(0.72, 0.9626667, 1, 0.23529412)
+shader_parameter/outline_size = 12.68400060249
+shader_parameter/pulse_enabled = true
+shader_parameter/pulse_speed = 4.5650002168375
+shader_parameter/pulse_min_size = 1.0
+shader_parameter/pulse_max_size = 2.30800010963
+shader_parameter/pulse_alpha_min = 0.990000047025
+shader_parameter/pulse_alpha_max = 1.0
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/tint_strength = 1.0
+
+[sub_resource type="Animation" id="Animation_twbfh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ArrowSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -100)]
+}
+
+[sub_resource type="Animation" id="Animation_7b2g8"]
+resource_name = "bounce"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ArrowSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -100), Vector2(0, -90)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kus5s"]
+_data = {
+&"RESET": SubResource("Animation_twbfh"),
+&"bounce": SubResource("Animation_7b2g8")
+}
+
+[node name="CakeBaseOption" type="Node2D" unique_id=887372413]
+script = ExtResource("1_h10cj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=469152420]
+
+[node name="CakeBaseSprite" type="TextureButton" parent="CanvasLayer" unique_id=472481059]
+material = SubResource("ShaderMaterial_ai34y")
+offset_left = -110.99999
+offset_top = -98.99999
+offset_right = -46.999992
+offset_bottom = -34.999992
+scale = Vector2(3.4375002, 3.03125)
+texture_normal = ExtResource("2_h10cj")
+
+[node name="ArrowSprite" type="Sprite2D" parent="." unique_id=1139657133]
+visible = false
+position = Vector2(0, -100)
+texture = ExtResource("4_rk5le")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1041494287]
+libraries/ = SubResource("AnimationLibrary_kus5s")
+autoplay = &"bounce"
+
+[node name="CakeTypeLabel" type="Label" parent="." unique_id=1522238652]
+offset_left = -19.0
+offset_top = 77.0
+offset_right = 21.0
+offset_bottom = 100.0
+text = "Type"

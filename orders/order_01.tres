@@ -31,6 +31,7 @@ metadata/_custom_type_script = "uid://cdr7mm2qje1o5"
 
 [resource]
 script = ExtResource("1_tanqh")
-order_id = "order_01"
+customer_name = "Gweedar"
+cake_batter_type = "yellow_sponge"
 top_decorations = SubResource("Resource_xug0e")
 metadata/_custom_type_script = "uid://bt5w2qxhur6ni"
