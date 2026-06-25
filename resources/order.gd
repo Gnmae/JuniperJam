@@ -6,6 +6,7 @@ extends Resource
 @export var cake_batter_type: String = "vanilla"
 @export var cake_base_color: Color = Color(1.0, 0.98, 0.92)
 @export var top_decorations: TopDecorations = null
+@export var side_decoration: SideDecorations = null
 @export var frosting_paths: Array[PathPlacement] = []
 @export var time_limit_seconds: float = 60.0
 

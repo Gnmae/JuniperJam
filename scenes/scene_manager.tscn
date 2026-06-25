@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bvssi4u8es6pw"]
 
-[ext_resource type="Script" uid="uid://dlpyqse32i3mg" path="res://scenes/scene_manager.gd" id="1_h7lqg"]
-[ext_resource type="Script" uid="uid://ccedm5b0qyu4v" path="res://scenes/sound_manager.gd" id="2_q7wi7"]
+[ext_resource type="Script" uid="uid://dlpyqse32i3mg" path="res://scripts/scene_manager.gd" id="1_h7lqg"]
+[ext_resource type="Script" uid="uid://ccedm5b0qyu4v" path="res://scripts/sound_manager.gd" id="2_q7wi7"]
 [ext_resource type="AudioStream" uid="uid://djp6wd02terb5" path="res://assets/sounds/keystroke_sound.wav" id="3_6k21d"]
 [ext_resource type="AudioStream" uid="uid://cjtmvj1xm6es1" path="res://assets/sounds/chutter_click.wav" id="4_cjhpt"]
 
@@ -32,6 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 
 [node name="SoundManager" type="Node2D" parent="." unique_id=647671182]
 script = ExtResource("2_q7wi7")

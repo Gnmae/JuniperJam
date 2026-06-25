@@ -1,9 +1,54 @@
 extends Control
 
+@onready var new_game_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/NewGame
+@onready var continue_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/Continue
+@onready var options_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/OptionsButton
+@onready var quit_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/QuitButton
+@onready var overwrite_save_modal: VBoxContainer = $MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal
+@onready var yes_new_game_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal/YesNewGameButton
+@onready var no_new_game_button_2: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal/NoNewGameButton2
+@onready var menu_buttons_container: VBoxContainer = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer
 
-func _on_play_button_pressed() -> void:
-	Global.scene_manager.change_world_2d_scene("uid://cyo7hmcnjxr4o") # uid of opening scene res://opening_scene/opening_scene.tscn
+@onready var main_menu_header: Label = $MainMenuUI/VBoxContainer/Label
+
+func _ready() -> void:
+	overwrite_save_modal.hide()
+	# Show Continue only if a save exists
+	continue_button.visible = GameSession.has_save()
+
+func _on_new_game_pressed() -> void:
+	if GameSession.has_save():
+		# Ask before overwriting
+		overwrite_save_modal.show()
+		
+		main_menu_header.hide()
+		menu_buttons_container.hide()
+	else:
+		_start_new_game()
+
+func _on_yes_new_game_button_pressed() -> void:
+	overwrite_save_modal.hide()
+	_start_new_game()
+
+func _on_no_new_game_button_2_pressed() -> void:
+	main_menu_header.show()
+	menu_buttons_container.show()
+	
+	overwrite_save_modal.hide()
+
+func _start_new_game() -> void:
+	GameSession.new_game()
+	Global.scene_manager.change_world_2d_scene(Constants.SCENE_PATHS.opening_scene)
 	Global.scene_manager.change_ui_scene("")
+
+func _on_continue_button_pressed() -> void:
+	GameSession.load_save()
+	if GameSession.has_flag("opening_scene_done"):
+		Global.scene_manager.change_world_2d_scene("")
+		Global.scene_manager.change_ui_scene(Constants.SCENE_PATHS.hub)
+	else:
+		Global.scene_manager.change_world_2d_scene(Constants.SCENE_PATHS.opening_scene)
+		Global.scene_manager.change_ui_scene("")
 
 func _on_options_button_pressed() -> void:
 	%MainMenuUI.hide()

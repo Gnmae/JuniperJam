@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://65qph7dmwyaf"]
+
+[ext_resource type="Script" uid="uid://cqf5e8w08hft4" path="res://scripts/order_ticket.gd" id="1_is44k"]
+[ext_resource type="Texture2D" uid="uid://ci0odwl8xq4me" path="res://assets/sprites/9patch.png" id="3_y7odh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_t5xhs"]
+font_size = 30
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_n5bth"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="OrderTicket" type="Control" unique_id=542798802]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 288.0
+offset_top = 108.0
+offset_right = 935.0
+offset_bottom = 460.0
+script = ExtResource("1_is44k")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=2107549073]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_y7odh")
+patch_margin_left = 2
+patch_margin_top = 2
+patch_margin_right = 2
+patch_margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect" unique_id=1037430176]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OrderHeaderLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=868719797]
+layout_mode = 2
+text = "ORDER #: 1"
+label_settings = SubResource("LabelSettings_t5xhs")
+
+[node name="CakeTypeLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=1378831075]
+layout_mode = 2
+text = "Cake Type Details
+- 
+"
+label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="FrostingLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=1630733856]
+layout_mode = 2
+text = "Frosting Details
+- 
+"
+label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="DecorationsLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=1831607038]
+layout_mode = 2
+text = "Decoration Details
+- 
+"
+label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="TimeLimitLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=2082439389]
+layout_mode = 2
+text = "Time Limit
+- 
+"
+label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="NextButton" type="Button" parent="." unique_id=1660258224]
+layout_mode = 0
+offset_left = 440.0
+offset_top = 388.0
+offset_right = 522.0
+offset_bottom = 441.0
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_font_sizes/font_size = 32
+text = "Next"
+icon_alignment = 1

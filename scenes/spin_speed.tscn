@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bp6bmverypc85"]
+
+[ext_resource type="Script" uid="uid://bd36ggvjkjx4p" path="res://scripts/spin_speed.gd" id="1_e0td7"]
+
+[node name="SpinSpeed" type="Control" unique_id=973816418]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e0td7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1159316520]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Spin Label" type="Label" parent="VBoxContainer" unique_id=733454165]
+layout_mode = 2
+
+[node name="Spin Button" type="Button" parent="VBoxContainer" unique_id=1822871001]
+layout_mode = 2
+text = "Spin"
+
+[node name="NextButton" type="Button" parent="VBoxContainer" unique_id=2068784358]
+layout_mode = 2
+text = "Next"

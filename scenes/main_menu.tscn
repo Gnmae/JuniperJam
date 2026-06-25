@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cy3j832soqqvf" path="res://scripts/main_menu.gd" id="1_wu84c"]
 [ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="2_8ln24"]
+[ext_resource type="PackedScene" uid="uid://d1fi38dtd646i" path="res://scenes/UI/AnimatedButton.tscn" id="3_8ln24"]
 [ext_resource type="Script" uid="uid://d1ekpqyo45v1f" path="res://scripts/ui/button.gd" id="3_rtw2f"]
 [ext_resource type="Script" uid="uid://c1x5bcfqwhtq8" path="res://scripts/ui/h_slider.gd" id="4_oa1go"]
 
@@ -49,21 +50,18 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenuUI/VBoxContainer/MarginContainer" unique_id=213722605]
+[node name="MenuButtonsContainer" type="VBoxContainer" parent="MainMenuUI/VBoxContainer/MarginContainer" unique_id=213722605]
 layout_mode = 2
 
-[node name="PlayButton" type="Button" parent="MainMenuUI/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1187318485]
-custom_minimum_size = Vector2(200, 55)
+[node name="Continue" parent="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer" unique_id=564724254 instance=ExtResource("3_8ln24")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 3
-offset_transform_enabled = true
-theme_override_font_sizes/font_size = 32
-text = "Play"
-icon_alignment = 1
-script = ExtResource("3_rtw2f")
+text = "Continue"
 
-[node name="OptionsButton" type="Button" parent="MainMenuUI/VBoxContainer/MarginContainer/VBoxContainer" unique_id=457735673]
+[node name="NewGame" parent="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer" unique_id=899877153 instance=ExtResource("3_8ln24")]
+layout_mode = 2
+text = "New Game"
+
+[node name="OptionsButton" type="Button" parent="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer" unique_id=457735673]
 custom_minimum_size = Vector2(200, 55)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -73,7 +71,7 @@ theme_override_font_sizes/font_size = 32
 text = "Options"
 script = ExtResource("3_rtw2f")
 
-[node name="QuitButton" type="Button" parent="MainMenuUI/VBoxContainer/MarginContainer/VBoxContainer" unique_id=614490958]
+[node name="QuitButton" type="Button" parent="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer" unique_id=614490958]
 custom_minimum_size = Vector2(200, 55)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -83,6 +81,28 @@ theme_override_font_sizes/font_size = 32
 text = "Quit
 "
 script = ExtResource("3_rtw2f")
+
+[node name="OverwriteSaveModal" type="VBoxContainer" parent="MainMenuUI/VBoxContainer/MarginContainer" unique_id=338341483]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal" unique_id=606361289]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Are you sure you want to start a new save, overwriting your old one?"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="YesNewGameButton" parent="MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal" unique_id=44382264 instance=ExtResource("3_8ln24")]
+layout_mode = 2
+text = "Yes"
+
+[node name="NoNewGameButton2" parent="MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal" unique_id=1093896763 instance=ExtResource("3_8ln24")]
+layout_mode = 2
+text = "No"
 
 [node name="OptionsUI" type="MarginContainer" parent="." unique_id=483533250]
 unique_name_in_owner = true
@@ -169,7 +189,10 @@ size_flags_vertical = 4
 text = "Return"
 script = ExtResource("3_rtw2f")
 
-[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/Continue" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal/YesNewGameButton" to="." method="_on_yes_new_game_button_pressed"]
+[connection signal="pressed" from="MainMenuUI/VBoxContainer/MarginContainer/OverwriteSaveModal/NoNewGameButton2" to="." method="_on_no_new_game_button_2_pressed"]
 [connection signal="pressed" from="OptionsUI/VBoxContainer/OptionsReturnButton" to="." method="_on_options_return_button_pressed"]

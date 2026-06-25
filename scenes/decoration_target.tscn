@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dqvk10pyet8q3"]
 
-[ext_resource type="Script" uid="uid://by0odjn13ceeh" path="res://scenes/decoration_target.gd" id="1_pjjkr"]
+[ext_resource type="Script" uid="uid://by0odjn13ceeh" path="res://resources/decoration_target.gd" id="1_pjjkr"]
 [ext_resource type="Shader" uid="uid://dsa4n8i2fk4wp" path="res://assets/shaders/dashed_outline.gdshader" id="1_u8yce"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u8yce"]
