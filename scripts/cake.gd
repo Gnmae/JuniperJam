@@ -85,6 +85,7 @@ var frosting_accuracy: float = 0.0
 func _ready() -> void:
 	if current_order == null:
 		current_order = Order.get_order("order_02")
+	apply_batter_color()
 	setup_containers()
 	setup_ui()
 	if GameSession.session_result and speed_v_slider:
@@ -550,6 +551,20 @@ func _on_spin_toggle_changed(pressed: bool) -> void:
 			speed_label.text = "0"
 
 # HELPERS
+func apply_batter_color() -> void:
+	if cake_top_sprite == null:
+		print("ERROR: cake_top_sprite is null")
+		return
+	print("cake_top_sprite material: ", cake_top_sprite.material)
+	var mat := cake_top_sprite.material as ShaderMaterial
+	if mat == null:
+		print("ERROR: material is null or not a ShaderMaterial")
+		return
+	print("cake_base_data: ", GameSession.cake_base_data)
+	var color: Color = GameSession.cake_base_data.get("color", Color(1.0, 0.98, 0.9))
+	print("Applying color: ", color)
+	mat.set_shader_parameter("base_color", color)
+
 func clear_frosting() -> void:
 	if frosting_container:
 		for child in frosting_container.get_children():
