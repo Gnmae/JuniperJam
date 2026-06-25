@@ -51,12 +51,15 @@ func _on_continue_button_pressed() -> void:
 		Global.scene_manager.change_ui_scene("")
 
 func _on_options_button_pressed() -> void:
+	await get_tree().create_timer(transition_time).timeout
 	%MainMenuUI.hide()
 	%OptionsUI.show()
 
 func _on_quit_button_pressed() -> void:
+	await get_tree().create_timer(transition_time).timeout
 	get_tree().quit()
 
 func _on_options_return_button_pressed() -> void:
+	await get_tree().create_timer(transition_time).timeout
 	%MainMenuUI.show()
 	%OptionsUI.hide()

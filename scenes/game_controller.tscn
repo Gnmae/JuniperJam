@@ -7,6 +7,5 @@
 script = ExtResource("1_3iy47")
 
 [node name="Cake" parent="." unique_id=1808201546 instance=ExtResource("2_soqow")]
-decorate_time = 1.0
 
 [connection signal="finished" from="Cake" to="." method="_on_cake_finished"]

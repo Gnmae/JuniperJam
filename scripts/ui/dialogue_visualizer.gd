@@ -63,10 +63,12 @@ func advance_dialogue(next_id) -> void:
 
 func create_choices() -> void:
 	for response in dialogue_line.responses:
-		var new_response = Button.new()
+		var new_response = load("res://scenes/base_button_style_box.tscn").instantiate()
 		%ResponseContainer.add_child(new_response)
+		new_response.setup_polygon()
 		new_response.text = response.text
 		new_response.pressed.connect(func(): advance_dialogue(response.next_id))
+		
 	waiting_for_choice = true
 
 func clear_choices() -> void:

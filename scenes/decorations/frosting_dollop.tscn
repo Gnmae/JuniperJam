@@ -6,4 +6,5 @@ load_path = "res://.godot/imported/frosting_spot_top.png-2a0c177c2c46eca825b8955
 [node name="FrostingDollop" type="Node2D" unique_id=310679872]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1503529611]
+texture_filter = 1
 texture = SubResource("CompressedTexture2D_6duay")

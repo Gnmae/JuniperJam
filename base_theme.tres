@@ -4,6 +4,11 @@
 
 [resource]
 default_font_size = 24
+Button/styles/hover = SubResource("StyleBoxFlat_8ln24")
+Button/styles/normal = SubResource("StyleBoxFlat_5u5kh")
+Button/styles/pressed = SubResource("StyleBoxFlat_rtw2f")
+HSeparator/constants/separation = 10
+HSeparator/styles/separator = SubResource("StyleBoxEmpty_5u5kh")
 MarginContainer/constants/margin_bottom = 50
 MarginContainer/constants/margin_left = 50
 MarginContainer/constants/margin_right = 50

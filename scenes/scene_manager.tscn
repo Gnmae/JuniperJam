@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://ccedm5b0qyu4v" path="res://scripts/sound_manager.gd" id="2_q7wi7"]
 [ext_resource type="AudioStream" uid="uid://djp6wd02terb5" path="res://assets/sounds/keystroke_sound.wav" id="3_6k21d"]
 [ext_resource type="AudioStream" uid="uid://cjtmvj1xm6es1" path="res://assets/sounds/chutter_click.wav" id="4_cjhpt"]
+[ext_resource type="AudioStream" uid="uid://behvujoa51jnw" path="res://assets/sounds/mouse_click.wav" id="5_q7wi7"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4sjmi"]
 random_pitch = 1.122462
@@ -15,6 +16,11 @@ stream_0/stream = ExtResource("3_6k21d")
 random_pitch = 1.0594631
 streams_count = 1
 stream_0/stream = ExtResource("4_cjhpt")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_05ayi"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("5_q7wi7")
 
 [node name="SceneManager" type="Node" unique_id=1255692518 node_paths=PackedStringArray("world_2d", "ui")]
 script = ExtResource("1_h7lqg")
@@ -44,4 +50,8 @@ bus = &"Sounds"
 [node name="ChutterClickSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1586363916]
 stream = SubResource("AudioStreamRandomizer_5u5kh")
 volume_db = -5.0
+bus = &"Sounds"
+
+[node name="MouseClickSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=312893745]
+stream = SubResource("AudioStreamRandomizer_05ayi")
 bus = &"Sounds"
