@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cxqdlgqpte2sp"]
+[gd_scene format=3 uid="uid://dmsc35y2hrm1a"]
 
 [ext_resource type="Script" uid="uid://dxnouwxt27qdf" path="res://scripts/cake.gd" id="1_yl5fd"]
 [ext_resource type="Texture2D" uid="uid://w3p020eiu0t2" path="res://assets/sprites/plate.png" id="2_icyrn"]
@@ -52,7 +52,7 @@ scale = Vector2(8.34375, 8.34375)
 texture = ExtResource("2_icyrn")
 
 [node name="CakeTop" type="Sprite2D" parent="." unique_id=1261369442]
-z_index = 1
+z_index = 3
 material = SubResource("ShaderMaterial_t5xhs")
 scale = Vector2(1.241, 1.241)
 texture = SubResource("AtlasTexture_ai34y")
@@ -179,6 +179,10 @@ text = "Phase:"
 layout_mode = 2
 text = "Speed Select"
 
+[node name="NextButton" type="Button" parent="DebugControls/VBoxContainer" unique_id=86123086]
+layout_mode = 2
+text = "Finish Early!"
+
 [node name="DecorationControls" type="Control" parent="." unique_id=1211903953]
 z_index = 5
 layout_mode = 3
@@ -224,3 +228,4 @@ z_index = 5
 texture = SubResource("AtlasTexture_yl5fd")
 
 [connection signal="input_event" from="PlateArea2D" to="Plate" method="_on_plate_area_2d_input_event"]
+[connection signal="pressed" from="DebugControls/VBoxContainer/NextButton" to="." method="_on_next_button_pressed"]

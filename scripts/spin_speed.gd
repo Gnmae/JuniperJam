@@ -17,5 +17,4 @@ func _on_spin_pressed() -> void:
 
 func _on_next_pressed() -> void:
 	Global.scene_manager.change_ui_scene("")
-	Global.scene_manager.change_world_2d_scene(Constants.SCENE_PATHS.top_decotation)
-	#get_tree().change_scene_to_file(Constants.SCENE_PATHS.top_decotation)
+	Global.scene_manager.change_world_2d_scene(Constants.SCENE_PATHS.top_decoration)

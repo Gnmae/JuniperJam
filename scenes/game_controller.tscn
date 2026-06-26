@@ -1,11 +1,9 @@
 [gd_scene format=3 uid="uid://cr6jrn8uade0l"]
 
 [ext_resource type="Script" uid="uid://ckplj2k0ydtmn" path="res://scripts/game_controller.gd" id="1_3iy47"]
-[ext_resource type="PackedScene" uid="uid://cxqdlgqpte2sp" path="res://scenes/top_decoration.tscn" id="2_soqow"]
+[ext_resource type="PackedScene" uid="uid://dmsc35y2hrm1a" path="res://scenes/cake.tscn" id="2_vc4nx"]
 
 [node name="GameController" type="Node" unique_id=1222410529]
 script = ExtResource("1_3iy47")
 
-[node name="Cake" parent="." unique_id=1808201546 instance=ExtResource("2_soqow")]
-
-[connection signal="finished" from="Cake" to="." method="_on_cake_finished"]
+[node name="Cake" parent="." unique_id=1808201546 instance=ExtResource("2_vc4nx")]

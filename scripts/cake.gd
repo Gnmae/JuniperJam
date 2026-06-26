@@ -37,13 +37,12 @@ extends Node2D
 # Containers
 @onready var frosting_container: Node2D = $CakeTop/FrostingContainer
 @onready var decoration_container: Node2D = $CakeTop/DecorationContainer
+@onready var next_button: Button = $DebugControls/VBoxContainer/NextButton
 
 @onready var tool_button_container: HBoxContainer = $DecorationControls/HBoxContainer
 @onready var decoration_pointer: Sprite2D = $DecorationPointer
 
-@onready var next_button: Button = $DebugControls/VBoxContainer/NextButton
 
-const TOP_DECORATION_SCENE: PackedScene = preload("uid://ba1jiq1ndvwhj")
 const POINTER_ATLAS_TILE_SIZE := 32
 var _pointer_base_texture: Texture2D = null
 
@@ -104,8 +103,7 @@ func _ready() -> void:
 		decoration_pointer.hide()
 	if plate_area_2d:
 		plate_area_2d.input_event.connect(_on_plate_area_2d_input_event)
-	if next_button:
-		next_button.text = "Finish Early"
+	next_button.text = "Finish Early"
 
 	state = STATE.INITIAL
 	update_phase_label()
@@ -206,12 +204,9 @@ func _drop_decoration(tool_def: Dictionary) -> void:
 	if dec_data.is_empty():
 		return
 
-	var item: TopDecorationItem = TOP_DECORATION_SCENE.instantiate()
-	# Add to scene root temporarily so it can fall in world space
+	var item: TopDecorationItem = load(Constants.DECORATION_SCENES.top_decoration).instantiate()
 	get_parent().add_child(item)
 	item.setup(dec_data, cake_top_sprite)
-
-	# Drop from mouse X, above the cake
 	item.start_fall(get_global_mouse_position())
 
 func _on_plate_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -482,9 +477,7 @@ func done_enter() -> void:
 	update_phase_label()
 	finished.emit()
 
-	if next_button:
-		next_button.text = "Next"
-		next_button.show()
+	
 
 func _on_next_button_pressed() -> void:
 	if state == STATE.DECORATE:

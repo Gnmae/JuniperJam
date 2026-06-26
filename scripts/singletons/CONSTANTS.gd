@@ -5,7 +5,7 @@ const SCENE_PATHS: Dictionary = {
 	"decoration_target": "uid://dqvk10pyet8q3",
 	"order_ticket": "uid://65qph7dmwyaf",
 	"cake_base_selection": "uid://bw4krn5w0jakp",
-	"top_decotation": "uid://cxqdlgqpte2sp",
+	"top_decoration": "uid://dmsc35y2hrm1a",
 	"cake_base_option" : "uid://bkc4bjmjqe25g",
 	"spin_speed" : "uid://bp6bmverypc85",
 	"opening_scene" : "uid://cyo7hmcnjxr4o",
@@ -14,6 +14,8 @@ const SCENE_PATHS: Dictionary = {
 }
 
 const DECORATION_SCENES: Dictionary = {
+	"top_decoration" : "uid://ba1jiq1ndvwhj",
+	"side_decoration" : "uid://ctwmi3l0qgbal",
 	"candle": "res://scenes/decorations/candle.tscn",
 	"frosting_dollop" : "uid://cqxgshefb05yh"
 }
