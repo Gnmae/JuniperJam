@@ -55,3 +55,61 @@ const CAKE_BASES: Array[Dictionary] = [
 		"color": Color(1.0, 0.967, 0.0, 1.0)
 	}
 ]
+
+# todo, side and top decoration dictionaries could just be combined some way
+const TOP_DECORATIONS: Array[Dictionary] = [
+	{
+		"id": "candle",
+		"label": "Candle",
+		"atlas_pos": Vector2(0, 0),
+		"collision_radius": 12.0,
+		"scale": Vector2.ONE,
+	},
+	{
+		"id": "cherry",
+		"label": "Cherry",
+		"atlas_pos": Vector2(1, 0),
+		"collision_radius": 10.0,
+		"scale": Vector2.ONE,
+	},
+]
+
+const SIDE_DECORATIONS: Array[Dictionary] = [
+	{
+		"id": "candle",
+		"label": "Candle",
+		"atlas_pos": Vector2(0, 0),
+		"collision_radius": 12.0,
+		"scale": Vector2.ONE,
+	},
+	{
+		"id": "cherry",
+		"label": "Cherry",
+		"atlas_pos": Vector2(1, 0),
+		"collision_radius": 10.0,
+		"scale": Vector2.ONE,
+	},
+]
+
+#decoration tools so far
+# todo, add frosting subtool controls e.g. color? shape? size?
+const TOOLS: Array[Dictionary] = [
+	{
+		"id": "frosting",
+		"label": "Frosting",
+		"type": "frosting",
+		"pointer_atlas_pos": Vector2(0, 0),
+	},
+	{
+		"id": "candle",
+		"label": "Candle",
+		"type": "decoration",
+		"pointer_atlas_pos": Vector2(1, 0),
+	},
+	{
+		"id": "cherry",
+		"label": "Cherry",
+		"type": "decoration",
+		"pointer_atlas_pos": Vector2(2, 0),
+	},
+]

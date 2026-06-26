@@ -6,7 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://cvdpp343xg2d4" path="res://assets/sprites/hand.png" id="4_bg1l6"]
 [ext_resource type="Texture2D" uid="uid://coi35qh8naqyf" path="res://assets/sprites/cake_game_sprites.png" id="4_hrrm1"]
 [ext_resource type="Shader" uid="uid://cbxat23mxroof" path="res://assets/shaders/cake_top.gdshader" id="4_yl5fd"]
-[ext_resource type="Texture2D" uid="uid://bqeitejsd5nkx" path="res://assets/sprites/frosting_pointer.png" id="7_hrrm1"]
+[ext_resource type="Texture2D" uid="uid://bttfxfim86sbh" path="res://assets/sprites/decoration_pointer-sheetx32.png" id="7_hrrm1"]
+[ext_resource type="Texture2D" uid="uid://ce2n1aiib30pp" path="res://assets/sprites/candle_top.png" id="7_msnv4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t5xhs"]
 shader = ExtResource("4_yl5fd")
@@ -32,18 +33,16 @@ radius = 275.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t5xhs"]
 bg_color = Color(0, 0.68669873, 0.6861986, 1)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrrm1"]
+atlas = ExtResource("4_hrrm1")
+region = Rect2(676, 284, 160, 205)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yl5fd"]
+atlas = ExtResource("7_hrrm1")
+region = Rect2(0, 0, 32, 32)
+
 [node name="Cake" type="Node2D" unique_id=1808201546]
 script = ExtResource("1_yl5fd")
-spin_time = null
-decorate_time = null
-spin_speed_multiplier = null
-min_speed = null
-max_speed = null
-frosting_color = null
-dollop_spacing = null
-max_frosting_dollops = null
-frosting_tolerance = null
-target_color = null
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=909115442]
 
@@ -194,16 +193,34 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -57.5
+offset_right = -12.0
+offset_bottom = 57.5
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.74, 0.74)
 
-[node name="FrostingToolButton" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=1601285995]
+[node name="ToolButton_frosting" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=1601285995]
 layout_mode = 2
 size_flags_horizontal = 4
 toggle_mode = true
 texture_normal = ExtResource("3_bg1l6")
 
-[node name="FrostingPointer" type="Sprite2D" parent="." unique_id=410159151]
-texture = ExtResource("7_hrrm1")
+[node name="ToolButton_cherry" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=2064204686]
+layout_mode = 2
+size_flags_horizontal = 4
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_hrrm1")
+
+[node name="ToolButton_candle" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=1607915128]
+layout_mode = 2
+size_flags_horizontal = 4
+toggle_mode = true
+texture_normal = ExtResource("7_msnv4")
+
+[node name="DecorationPointer" type="Sprite2D" parent="." unique_id=410159151]
+visible = false
+z_index = 5
+texture = SubResource("AtlasTexture_yl5fd")
 
 [connection signal="input_event" from="PlateArea2D" to="Plate" method="_on_plate_area_2d_input_event"]

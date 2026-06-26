@@ -10,12 +10,6 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t5xhs"]
 shader = ExtResource("4_yl5fd")
 shader_parameter/base_color = Color(0.8392157, 0.45882353, 0.6666667, 1)
-shader_parameter/texture_scale = 34.5
-shader_parameter/noise_strength = 0.1310000062225
-shader_parameter/grain_strength = 0.30000001425
-shader_parameter/sheen_strength = 0.2800000133
-shader_parameter/sheen_direction = Vector2(0.65, -0.75)
-shader_parameter/saturation_variation = 0.1250000059375
 
 [sub_resource type="GDScript" id="GDScript_yl5fd"]
 script/source = "extends Sprite2D
@@ -35,6 +29,17 @@ bg_color = Color(0, 0.68669873, 0.6861986, 1)
 
 [node name="Cake" type="Node2D" unique_id=1808201546]
 script = ExtResource("1_yl5fd")
+spin_time = null
+decorate_time = null
+spin_speed_multiplier = null
+min_speed = null
+max_speed = null
+frosting_color = null
+dollop_spacing = null
+max_frosting_dollops = null
+dollop_interval = null
+frosting_tolerance = null
+target_color = null
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=909115442]
 
