@@ -199,7 +199,13 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		set_active_tool("")
 
+func _is_mouse_over_ui() -> bool:
+	return get_viewport().gui_get_hovered_control() != null
+
 func _drop_decoration(tool_def: Dictionary) -> void:
+	if _is_mouse_over_ui():
+		return
+
 	var dec_data := _get_decoration_data(tool_def.get("id", ""))
 	if dec_data.is_empty():
 		return
@@ -314,6 +320,16 @@ func setup_ui() -> void:
 		reverse_button.toggled.connect(_on_reverse_button_toggled)
 	if spin_toggle_button:
 		spin_toggle_button.toggled.connect(_on_spin_toggle_changed)
+	decorate_timer = current_order.time_limit_seconds
+	decorate_time = current_order.time_limit_seconds
+	original_clock_position = clock_sprite.position
+	is_shaking_clock = false
+	#set_active_tool("")
+
+	timer_progress_bar.max_value = current_order.time_limit_seconds
+	timer_progress_bar.value = current_order.time_limit_seconds
+	time_label.text = str(int(current_order.time_limit_seconds))
+	update_timer_color(1.0)
 
 func update_phase_label() -> void:
 	if not phase_label:
@@ -329,7 +345,7 @@ func update_phase_label() -> void:
 			phase_label.text = "DECORATE PHASE"
 			phase_label.modulate = Color(1.0, 0.75, 0.2)
 		STATE.DONE:
-			phase_label.text = "CAKE COMPLETE!"
+			phase_label.text = "Times Up!"
 			phase_label.modulate = Color(0.3, 1.0, 0.4)
 		_:
 			phase_label.text = "UNKNOWN"
@@ -428,16 +444,7 @@ func end_frosting() -> void:
 # STATE MACHINE
 func decorate_enter() -> void:
 	update_phase_label()
-	decorate_timer = current_order.time_limit_seconds
-	decorate_time = current_order.time_limit_seconds
-	original_clock_position = clock_sprite.position
-	is_shaking_clock = false
-	set_active_tool("")
 
-	timer_progress_bar.max_value = current_order.time_limit_seconds
-	timer_progress_bar.value = current_order.time_limit_seconds
-	time_label.text = str(int(current_order.time_limit_seconds))
-	update_timer_color(1.0)
 
 	if next_button:
 		next_button.text = "Finish Early"
@@ -472,6 +479,18 @@ func done_enter() -> void:
 		frosting_accuracy = _dollop_accuracy_sum / float(_dollop_accuracy_count)
 	else:
 		frosting_accuracy = 0.0
+	print("Frosting accuracy: ", frosting_accuracy)
+	
+	set_active_tool("")
+	decoration_pointer.hide()
+	for btn in _tool_buttons.values():
+		btn.disabled = true
+	next_button.text = "Next Step!"
+	_save_decorations_to_session()
+	update_phase_label()
+	finished.emit()
+	
+	
 	print("Frosting accuracy: ", frosting_accuracy)
 	_save_decorations_to_session()
 	update_phase_label()
