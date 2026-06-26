@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dj47rwttgk6so" path="res://scripts/ui/dialogue_visualizer.gd" id="1_2w8es"]
 [ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="2_61xuo"]
 [ext_resource type="Script" uid="uid://drthbisi3ut1" path="res://scripts/ui/ui_style_box.gd" id="3_61xuo"]
-[ext_resource type="Script" uid="uid://3v46bovldv41" path="res://scripts/response_container.gd" id="4_j2imu"]
 
 [node name="OpeningScene" type="Node2D" unique_id=1061166095]
 script = ExtResource("1_2w8es")

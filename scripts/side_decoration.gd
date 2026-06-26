@@ -6,7 +6,7 @@ extends Control
 @export var strip_height: float = 300.0
 
 # Timer
-@export var decorate_time: float = 30.0
+@export var decorate_time: float = 60.0
 
 # Frosting
 @export var frosting_color: Color = Color(1.0, 0.85, 0.7, 1.0)
@@ -42,6 +42,7 @@ var _dollop_accuracy_sum: float = 0.0
 var _dollop_accuracy_count: int = 0
 
 func _ready() -> void:
+	_load_order()
 	if frosting_pointer:
 		frosting_pointer.visible = false
 	if next_button:
@@ -50,17 +51,16 @@ func _ready() -> void:
 	if frosting_tool_button:
 		frosting_tool_button.toggled.connect(_on_frosting_tool_toggled)
 
-	decorate_timer = decorate_time
+	#decorate_timer = decorate_time
 	timer_progress_bar.max_value = decorate_time
-	timer_progress_bar.value = decorate_time
+	timer_progress_bar.value = decorate_timer
 	time_label.text = str(int(decorate_time))
-
-	_load_order()
 
 func _load_order() -> void:
 	var order = GameSession.current_order
 	if order == null:
 		return
+	decorate_timer = order.time_left
 	# Set cake band color from order
 	var band = $CakeWindow/SubViewport/ParallaxBackground/CakeBandLayer/CakeBandA
 	if band and order.cake_base_color:
@@ -150,17 +150,30 @@ func _place_frosting_dollops() -> void:
 	if not is_drawing_frosting or dollop_count >= max_frosting_dollops:
 		return
 	var current_pos := _mouse_to_strip_pos()
-	var distance := last_dollop_position.distance_to(current_pos)
+	var delta := _least_distance_between(last_dollop_position, current_pos)
+	var distance = delta.length()
 	if distance >= dollop_spacing:
-		var direction := (current_pos - last_dollop_position).normalized()
+		var direction := delta.normalized()
 		var steps := int(distance / dollop_spacing)
 		for i in range(1, steps + 1):
-			if dollop_count >= max_frosting_dollops:
-				break
+			var pos := last_dollop_position + direction * dollop_spacing * i
+			pos.x = fposmod(pos.x, strip_width)
 			_place_single_dollop(last_dollop_position + direction * dollop_spacing * i)
-		last_dollop_position = last_dollop_position + direction * dollop_spacing * steps
+		var last_pos := last_dollop_position + direction * dollop_spacing * steps
+		last_pos.x = fposmod(last_pos.x, strip_width)
+		last_dollop_position = last_pos
+
+func _least_distance_between(a: Vector2, b: Vector2) -> Vector2:
+	var dx := b.x - a.x
+	if dx > strip_width * 0.5:
+		dx -= strip_width
+	elif dx < -strip_width * 0.5:
+		dx += strip_width
+	return Vector2(dx, b.y-a.y)
 
 func _place_single_dollop(pos: Vector2) -> void:
+	if dollop_count >= max_frosting_dollops:
+		return
 	var scene_path = Constants.DECORATION_SCENES.frosting_dollop
 	if scene_path == "":
 		return

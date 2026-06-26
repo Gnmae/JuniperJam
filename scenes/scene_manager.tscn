@@ -5,10 +5,10 @@
 [ext_resource type="AudioStream" uid="uid://djp6wd02terb5" path="res://assets/sounds/keystroke_sound.wav" id="3_6k21d"]
 [ext_resource type="AudioStream" uid="uid://cjtmvj1xm6es1" path="res://assets/sounds/chutter_click.wav" id="4_cjhpt"]
 [ext_resource type="AudioStream" uid="uid://behvujoa51jnw" path="res://assets/sounds/mouse_click.wav" id="5_q7wi7"]
+[ext_resource type="AudioStream" uid="uid://cge1vu0k1knvh" path="res://assets/sounds/plate_spinning_sound.wav" id="6_6k21d"]
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4sjmi"]
-random_pitch = 1.122462
-random_volume_offset_db = 1.0
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_6k21d"]
+random_pitch = 1.0594631
 streams_count = 1
 stream_0/stream = ExtResource("3_6k21d")
 
@@ -44,14 +44,22 @@ mouse_filter = 1
 script = ExtResource("2_q7wi7")
 
 [node name="KeystrokeSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1219575738]
-stream = SubResource("AudioStreamRandomizer_4sjmi")
+stream = SubResource("AudioStreamRandomizer_6k21d")
+max_polyphony = 3
 bus = &"Sounds"
 
 [node name="ChutterClickSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1586363916]
 stream = SubResource("AudioStreamRandomizer_5u5kh")
 volume_db = -5.0
+max_polyphony = 3
 bus = &"Sounds"
 
 [node name="MouseClickSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=312893745]
 stream = SubResource("AudioStreamRandomizer_05ayi")
+max_polyphony = 3
+bus = &"Sounds"
+
+[node name="PlateSpinningSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1587700072]
+stream = ExtResource("6_6k21d")
+volume_db = -10.0
 bus = &"Sounds"

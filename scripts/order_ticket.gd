@@ -33,4 +33,5 @@ func _ready() -> void:
 	time_limit_label.text = "Time limit: %ds" % int(order.time_limit_seconds)
 
 func _on_next_button_pressed() -> void:
-	get_tree().change_scene_to_file(Constants.SCENE_PATHS.cake_base_selection)
+	Global.scene_manager.change_ui_scene("")
+	Global.scene_manager.change_world_2d_scene(Constants.SCENE_PATHS.cake_base_selection)

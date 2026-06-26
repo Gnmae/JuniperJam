@@ -63,7 +63,6 @@ func _on_option_selected(option_instance: Node2D) -> void:
 			inst.set_selected(inst == option_instance)
 	
 	selected_option = option_instance
-	
 	confirm_button.disabled = false
 
 func _on_confirm_button_pressed() -> void:
@@ -77,5 +76,8 @@ func _on_confirm_button_pressed() -> void:
 		var result = GameSession.session_result
 		result.set("cake_base_id", data.get("id", ""))
 		result.set("cake_base_data", data)
+	GameSession.current_order.cake_base_color = data.get("color")
 	
-	get_tree().change_scene_to_file(Constants.SCENE_PATHS.spin_speed)
+	Global.scene_manager.change_world_2d_scene("")
+	Global.scene_manager.change_ui_scene(Constants.SCENE_PATHS.spin_speed)
+	#get_tree().change_scene_to_file(Constants.SCENE_PATHS.spin_speed)

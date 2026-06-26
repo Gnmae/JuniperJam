@@ -24,6 +24,7 @@ extends Node2D
 @onready var plate_area_2d: Area2D = $PlateArea2D
 @onready var hand_sprite: Sprite2D = $PlateArea2D/HandSprite
 
+@onready var speed_label_3: Label = $SpinControls/VBoxContainer/SpeedLabel3
 @onready var spin_toggle_button: CheckButton = $SpinControls/VBoxContainer/SpinToggleButton
 @onready var speed_v_slider: VSlider = $SpinControls/VBoxContainer/HBoxContainer/SpeedVSlider
 @onready var speed_label: Label = $SpinControls/VBoxContainer/HBoxContainer/VBoxContainer/SpeedLabel
@@ -97,7 +98,7 @@ func _ready() -> void:
 		plate_area_2d.input_event.connect(_on_plate_area_2d_input_event)
 	if next_button:
 		next_button.text = "Finish Early"
-		next_button.pressed.connect(_on_next_button_pressed)
+		#next_button.pressed.connect(_on_next_button_pressed)
 
 	state = STATE.INITIAL
 	update_phase_label()
@@ -120,9 +121,10 @@ func spin_enter() -> void:
 
 		if elapsed < ramp_duration:
 			var t := elapsed / ramp_duration
-			cake_top_sprite.rotation_speed = lerp(0.0, target_speed, t)
+			#cake_top_sprite.rotation_speed = lerp(0.0, target_speed, t)
 		else:
-			cake_top_sprite.rotation_speed = target_speed
+			pass
+			#cake_top_sprite.rotation_speed = target_speed
 
 		var remaining := spin_time - elapsed
 		if remaining <= 3.0 and phase_label:
@@ -130,8 +132,7 @@ func spin_enter() -> void:
 			phase_label.modulate = Color(1.0, 0.4, 0.2)
 
 		await get_tree().process_frame
-
-	cake_top_sprite.rotation_speed = target_speed
+	#cake_top_sprite.rotation_speed = target_speed
 	decorate_enter()
 
 func setup_containers() -> void:
@@ -153,12 +154,12 @@ func setup_ui() -> void:
 		speed_label.text = str(int(speed_v_slider.value))
 	if frosting_tool_button:
 		frosting_tool_button.toggled.connect(_on_frosting_tool_toggled)
-	if speed_v_slider:
-		speed_v_slider.value_changed.connect(_on_speed_slider_changed)
+	#if speed_v_slider:
+		#speed_v_slider.value_changed.connect(_on_speed_slider_changed)
 	if reverse_button:
 		reverse_button.toggled.connect(_on_reverse_button_toggled)
-	if spin_toggle_button:
-		spin_toggle_button.toggled.connect(_on_spin_toggle_changed)
+	#if spin_toggle_button:
+		#spin_toggle_button.toggled.connect(_on_spin_toggle_changed)
 
 func update_phase_label() -> void:
 	if not phase_label:
@@ -197,6 +198,7 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		
 		if event.is_pressed() and not is_placing_decoration and is_frosting_tool_active:
 			start_frosting()
 		elif not event.is_pressed():
@@ -234,6 +236,8 @@ func _process(delta: float) -> void:
 		spin_update(delta)
 	elif state == STATE.DECORATE:
 		decorate_update(delta)
+	elif state == STATE.DONE:
+		done_update(delta)
 
 	if is_shaking_clock and clock_sprite:
 		var shake_amount = 3.0
@@ -247,7 +251,20 @@ func _process(delta: float) -> void:
 		frosting_pointer.global_position = get_global_mouse_position()
 
 func spin_update(_delta: float) -> void:
-	last_mouse_pos = get_global_mouse_position()
+	var current_mouse_pos = get_global_mouse_position()
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		var change = last_mouse_pos + current_mouse_pos
+		hand_sprite.show()
+		if change.y > 0:
+			cake_top_sprite.rotation_speed += deg_to_rad(change.y * 0.1)
+			cake_top_sprite.rotation_speed = clampf(cake_top_sprite.rotation_speed, min_speed, max_speed)
+	else:
+		hand_sprite.hide()
+	speed_label_3.text = "Speed : " + str(floor(cake_top_sprite.rotation_speed))
+	last_mouse_pos = current_mouse_pos
+	
+	var normalized_speed : float = remap(cake_top_sprite.current_rotation_speed, min_speed, max_speed, 1.0, 1.5)
+	Global.sound_manager.play("PlateSpinningSound", normalized_speed)
 
 # FROSTING GUIDE LINES
 func _setup_frosting_guide() -> void:
@@ -432,6 +449,11 @@ func decorate_update(delta: float) -> void:
 		decorate_timer = 0
 		state = STATE.DONE
 		done_enter()
+	
+	
+	
+	var normalized_speed : float = remap(cake_top_sprite.current_rotation_speed, min_speed, max_speed, 1.0, 1.5)
+	Global.sound_manager.play("PlateSpinningSound", normalized_speed)
 
 func done_enter() -> void:
 	if _dollop_accuracy_count > 0:
@@ -439,6 +461,7 @@ func done_enter() -> void:
 	else:
 		frosting_accuracy = 0.0
 	print("Frosting accuracy: ", frosting_accuracy)
+	cake_top_sprite.rotation_speed = 0
 	_save_decorations_to_session()
 	update_phase_label()
 	finished.emit()
@@ -447,15 +470,21 @@ func done_enter() -> void:
 		next_button.text = "Next"
 		next_button.show()
 
+func done_update(_delta : float) -> void:
+	pass
+
 func _on_next_button_pressed() -> void:
 	if state == STATE.DECORATE:
 		# Finish early
-		decorate_timer = 0
+		#decorate_timer = 0
 		state = STATE.DONE
 		done_enter()
 	# todo, use scenemanager
 	elif state == STATE.DONE:
-		get_tree().change_scene_to_file("res://scenes/side_decoration.tscn")
+		GameSession.current_order.time_left = decorate_timer
+		Global.scene_manager.change_world_2d_scene("")
+		Global.scene_manager.change_ui_scene("res://scenes/side_decoration.tscn")
+		#get_tree().change_scene_to_file("res://scenes/side_decoration.tscn")
 
 func _save_decorations_to_session() -> void:
 	if GameSession.session_result == null:
@@ -527,7 +556,7 @@ func _on_speed_slider_changed(value: float) -> void:
 		var dir: float = sign(cake_top_sprite.rotation_speed)
 		if dir == 0:
 			dir = float(last_direction)
-		cake_top_sprite.rotation_speed = clamp(value * dir, -max_speed, max_speed)
+		#cake_top_sprite.rotation_speed = clamp(value * dir, -max_speed, max_speed)
 
 func _on_reverse_button_toggled(_pressed: bool) -> void:
 	if spin_toggle_button and spin_toggle_button.button_pressed:

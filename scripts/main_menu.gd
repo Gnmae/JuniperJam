@@ -22,7 +22,7 @@ func _on_new_game_pressed() -> void:
 	if GameSession.has_save():
 		# Ask before overwriting
 		overwrite_save_modal.show()
-		
+		$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".hide()
 		main_menu_header.hide()
 		menu_buttons_container.hide()
 	else:
@@ -35,7 +35,7 @@ func _on_yes_new_game_button_pressed() -> void:
 func _on_no_new_game_button_2_pressed() -> void:
 	main_menu_header.show()
 	menu_buttons_container.show()
-	
+	$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".show()
 	overwrite_save_modal.hide()
 
 func _start_new_game() -> void:
@@ -55,6 +55,7 @@ func _on_continue_button_pressed() -> void:
 func _on_options_button_pressed() -> void:
 	await get_tree().create_timer(transition_time).timeout
 	%MainMenuUI.hide()
+	$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".hide()
 	%OptionsUI.show()
 
 func _on_quit_button_pressed() -> void:
@@ -64,4 +65,5 @@ func _on_quit_button_pressed() -> void:
 func _on_options_return_button_pressed() -> void:
 	await get_tree().create_timer(transition_time).timeout
 	%MainMenuUI.show()
+	$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".show()
 	%OptionsUI.hide()
