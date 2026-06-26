@@ -141,7 +141,7 @@ func _input(event: InputEvent) -> void:
 func _start_frosting() -> void:
 	is_drawing_frosting = true
 	last_dollop_position = _mouse_to_strip_pos()
-	_place_single_dollop(last_dollop_position)
+	#_place_single_dollop(last_dollop_position)
 
 func _end_frosting() -> void:
 	is_drawing_frosting = false
@@ -156,6 +156,8 @@ func _place_frosting_dollops() -> void:
 		var direction := delta.normalized()
 		var steps := int(distance / dollop_spacing)
 		for i in range(1, steps + 1):
+			if dollop_count >= max_frosting_dollops:
+				break
 			var pos := last_dollop_position + direction * dollop_spacing * i
 			pos.x = fposmod(pos.x, strip_width)
 			_place_single_dollop(last_dollop_position + direction * dollop_spacing * i)
