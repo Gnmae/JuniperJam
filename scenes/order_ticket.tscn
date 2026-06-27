@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://65qph7dmwyaf"]
 
 [ext_resource type="Script" uid="uid://cqf5e8w08hft4" path="res://scripts/order_ticket.gd" id="1_is44k"]
+[ext_resource type="Script" uid="uid://cnhwpgff6voox" path="res://tools/cake_preview.gd" id="3_is44k"]
 [ext_resource type="Texture2D" uid="uid://ci0odwl8xq4me" path="res://assets/sprites/9patch.png" id="3_y7odh"]
+[ext_resource type="Resource" uid="uid://1wc2u0di81mg" path="res://orders/order_01.tres" id="4_y7odh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_t5xhs"]
 font_size = 30
@@ -72,6 +74,15 @@ text = "Time Limit
 - 
 "
 label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="CakePreviewControl" type="Control" parent="NinePatchRect" unique_id=1852480103]
+anchors_preset = 0
+offset_left = 301.0
+offset_top = 114.0
+offset_right = 601.0
+offset_bottom = 280.0
+script = ExtResource("3_is44k")
+order = ExtResource("4_y7odh")
 
 [node name="NextButton" type="Button" parent="." unique_id=1660258224]
 layout_mode = 0

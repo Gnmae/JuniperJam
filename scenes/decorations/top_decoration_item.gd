@@ -39,7 +39,18 @@ func setup(decoration_data: Dictionary, cake_sprite: Node2D) -> void:
 
 	end_scale = decoration_data.get("scale", Vector2.ONE).x
 	set_meta("decoration_id", decoration_id)
-
+func setup_preview(decoration_data: Dictionary) -> void:
+	decoration_id = decoration_data.get("id", "")
+	var atlas_pos: Vector2 = decoration_data.get("atlas_pos", Vector2.ZERO)
+	var atlas_tex := AtlasTexture.new()
+	atlas_tex.atlas = ATLAS
+	atlas_tex.region = Rect2(atlas_pos.x * TILE_SIZE, atlas_pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+	# Use find_child instead of @onready path in case node isn't ready yet
+	var spr := find_child("Sprite2D") as Sprite2D
+	if spr:
+		spr.texture = atlas_tex
+	set_meta("decoration_id", decoration_id)
+	_falling = false
 func start_fall(world_pos: Vector2) -> void:
 	_start_world_pos = world_pos
 	global_position = world_pos

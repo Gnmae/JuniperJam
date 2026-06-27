@@ -16,11 +16,10 @@ func _init():
 	pass
 
 
-func add_frosting_path(pts: PackedVector2Array, col: Color = Color.WHITE, w: float = 4.0, origin: Vector2 = Vector2.ZERO) -> PathPlacement:
-	var p := PathPlacement.new(pts, col, w, origin)
+func add_frosting_path(pts: PackedVector2Array, color_id: String = "red", w: float = 4.0, origin: Vector2 = Vector2.ZERO) -> PathPlacement:
+	var p := PathPlacement.new(pts, color_id, w, origin)
 	frosting_paths.append(p)
 	return p
-
 func add_decoration(item_id: String, pos: Vector2, rot: float = 0.0, scl: Vector2 = Vector2.ONE) -> DecorationPlacement:
 	var d := DecorationPlacement.new(item_id, pos, rot, scl)
 	decorations.append(d)
