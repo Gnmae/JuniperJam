@@ -38,6 +38,7 @@ var _side_decoration_score_sum: float = 0.0
 var _side_decoration_score_count: int = 0
 
 func _ready() -> void:
+	_load_order()
 	if frosting_pointer:
 		frosting_pointer.visible = false
 	if next_button:
@@ -45,12 +46,10 @@ func _ready() -> void:
 	if frosting_tool_button:
 		frosting_tool_button.toggled.connect(_on_frosting_tool_toggled)
 
-	decorate_timer = decorate_time
+	#decorate_timer = decorate_time
 	timer_progress_bar.max_value = decorate_time
-	timer_progress_bar.value = decorate_time
+	timer_progress_bar.value = decorate_timer
 	time_label.text = str(int(decorate_time))
-
-	_load_order()
 
 func _load_order() -> void:
 	var order = GameSession.current_order
@@ -270,6 +269,8 @@ func _least_distance_between(a: Vector2, b: Vector2) -> Vector2:
 	return Vector2(dx, b.y - a.y)
 
 func _place_single_dollop(pos: Vector2) -> void:
+	if dollop_count >= max_frosting_dollops:
+		return
 	var scene_path = Constants.DECORATION_SCENES.frosting_dollop
 	if scene_path == "":
 		return

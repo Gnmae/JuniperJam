@@ -1,6 +1,6 @@
 extends Control
 
-@export var transition_time : float = 0.1
+@export var transition_time: float = 0.1
 
 @onready var new_game_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/NewGame
 @onready var continue_button: UIButton = $MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer/Continue
@@ -23,7 +23,7 @@ func _on_new_game_pressed() -> void:
 	if GameSession.has_save():
 		# Ask before overwriting
 		overwrite_save_modal.show()
-		
+		$"MainMenuUI_VBoxContainer_MarginContainer_VBoxContainer_QuitButton#UIStyleBox".hide()
 		main_menu_header.hide()
 		menu_buttons_container.hide()
 		main_menu_header_background.hide()

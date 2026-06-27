@@ -63,7 +63,6 @@ func _on_option_selected(option_instance: Node2D) -> void:
 			inst.set_selected(inst == option_instance)
 	
 	selected_option = option_instance
-	
 	confirm_button.disabled = false
 
 func _on_confirm_button_pressed() -> void:
@@ -72,12 +71,15 @@ func _on_confirm_button_pressed() -> void:
 		return
 	
 	var data: Dictionary = selected_option.option_data if "option_data" in selected_option else {}
-	print("Saving cake_base_data: ", data)  # confirm it has color
+	print("Saving cake_base_data: ", data) # confirm it has color
 	
-	GameSession.cake_base_data = data 
+	GameSession.cake_base_data = data
 	
 	if GameSession and GameSession.session_result:
-		GameSession.session_result.set("cake_base_id", data.get("id", ""))
-
+		var result = GameSession.session_result
+		result.set("cake_base_id", data.get("id", ""))
+		result.set("cake_base_data", data)
+	GameSession.current_order.cake_base_color = data.get("color")
+	
 	Global.scene_manager.change_world_2d_scene("")
 	Global.scene_manager.change_ui_scene(Constants.SCENE_PATHS.spin_speed)

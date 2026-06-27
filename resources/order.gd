@@ -10,6 +10,8 @@ extends Resource
 @export var frosting_paths: Array[PathPlacement] = []
 @export var time_limit_seconds: float = 60.0
 
+var time_left : float = 60.0
+
 # default/placeholder names here
 func _init(p_id: String = "order_01", p_customer: String = "Customer"):
 	order_id = p_id
