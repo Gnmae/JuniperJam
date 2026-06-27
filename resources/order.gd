@@ -14,12 +14,15 @@ const TopDecorations = preload("res://resources/top_decorations.gd")
 @export var frosting_paths: Array[PathPlacement] = []
 @export var time_limit_seconds: float = 60.0
 
+var time_left : float = 60.0
+
 # default/placeholder names here
 func _init(p_id: String = "order_01", p_customer: String = "Customer"):
 	order_id = p_id
 	customer_name = p_customer
 	if top_decorations == null:
 		top_decorations = TopDecorations.new()
+	time_left = time_limit_seconds
 
 func get_top_decorations() -> TopDecorations:
 	if top_decorations == null:

@@ -14,8 +14,12 @@ func _ready() -> void:
 				sound.finished.connect(_audio_2d_finished.bind(sound))
 
 func play(sound_name : String) -> void:
-	if sounds.has(sound_name):
-		sounds[sound_name].play()
+	if not sounds.has(sound_name):
+		return
+	if sounds[sound_name].playing and sounds[sound_name].max_polyphony <= 1:
+		return
+	
+	sounds[sound_name].play()
 
 func play_song(song_name : String) -> void:
 	if sounds.has(song_name):

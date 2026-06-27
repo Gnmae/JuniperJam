@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://cyo7hmcnjxr4o"]
 
-[ext_resource type="Script" uid="uid://dj47rwttgk6so" path="res://ui/dialogue_visualizer.gd" id="1_n14jt"]
-[ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="2_n14jt"]
+[ext_resource type="Script" uid="uid://dj47rwttgk6so" path="res://scripts/ui/dialogue_visualizer.gd" id="1_2w8es"]
+[ext_resource type="Texture2D" uid="uid://7p7jtkqwl4b0" path="res://assets/backgrounds/cake_game_background.png" id="2_6xt31"]
+[ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="2_61xuo"]
+[ext_resource type="Script" uid="uid://drthbisi3ut1" path="res://scripts/ui/ui_style_box.gd" id="3_61xuo"]
+[ext_resource type="Script" uid="uid://d1ekpqyo45v1f" path="res://scripts/ui/button.gd" id="4_j2imu"]
 
 [node name="OpeningScene" type="Node2D" unique_id=1061166095]
 script = ExtResource("1_n14jt")
@@ -16,6 +19,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control" unique_id=1522373246]
+z_index = -10
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_6xt31")
 
 [node name="BackgroundTextureRect" type="TextureRect" parent="CanvasLayer/Control" unique_id=1437937488]
 unique_name_in_owner = true
@@ -78,3 +89,18 @@ theme_override_constants/margin_bottom = 300
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 2
+
+[node name="DebugSkipButton" type="Button" parent="CanvasLayer/Control" unique_id=1789352474]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 602.0
+offset_right = 90.0
+offset_bottom = 644.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme = ExtResource("2_61xuo")
+text = "Skip"
+script = ExtResource("4_j2imu")
+
+[connection signal="pressed" from="CanvasLayer/Control/DebugSkipButton" to="." method="_on_debug_skip_button_pressed"]
