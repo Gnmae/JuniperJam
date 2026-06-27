@@ -46,15 +46,14 @@ func _ready() -> void:
 	if frosting_tool_button:
 		frosting_tool_button.toggled.connect(_on_frosting_tool_toggled)
 
-	#decorate_timer = decorate_time
-	timer_progress_bar.max_value = decorate_time
-	timer_progress_bar.value = decorate_timer
-	time_label.text = str(int(decorate_time))
-
 func _load_order() -> void:
 	var order = GameSession.current_order
 	if order == null:
 		return
+
+	decorate_timer = order.time_limit_seconds / 2.0  
+	timer_progress_bar.max_value = decorate_timer     
+	time_label.text = str(int(decorate_timer))
 
 	var band = $CakeWindow/SubViewport/ParallaxBackground/CakeBandLayer/CakeBandA
 	if band and order.cake_base_color:

@@ -75,6 +75,7 @@ layout_mode = 2
 color = Color(0, 0, 0, 0.45)
 
 [node name="FrostingPointer" type="Sprite2D" parent="." unique_id=1076634453]
+visible = false
 z_index = 20
 texture = ExtResource("2_sdeco")
 
