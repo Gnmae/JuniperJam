@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://cmuwvelnxwpuk"
+path="res://.godot/imported/failed_dialogue.dialogue-7d00342f4f25ec357ab16eae722f8b66.tres"
+
+[deps]
+
+source_file="res://dialogues/failed_dialogue.dialogue"
+dest_files=["res://.godot/imported/failed_dialogue.dialogue-7d00342f4f25ec357ab16eae722f8b66.tres"]
+
+[params]
+
+defaults=true

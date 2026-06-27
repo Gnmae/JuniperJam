@@ -1,0 +1,225 @@
+[gd_scene format=3 uid="uid://fg43ldteyxa3"]
+
+[ext_resource type="Script" uid="uid://kp6h8nm2v4u7" path="res://scripts/hub.gd" id="1_qssp3"]
+[ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="2_d1od2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ai34y"]
+font_size = 13
+
+[node name="Hub" type="Control" unique_id=1351738351]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qssp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=460265291]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=114090295]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1339007704]
+layout_mode = 2
+text = "Your Bakery"
+
+[node name="TotalOrdersLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=954751225]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Orders Completed: 0"
+
+[node name="TotalScoreLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=119899853]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Total Score: 0"
+
+[node name="HighScoreLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=838918016]
+unique_name_in_owner = true
+layout_mode = 2
+text = "High Score: 0"
+
+[node name="RecentLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=362850903]
+layout_mode = 2
+text = "Recent Orders"
+
+[node name="LastOrdersContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1621054081]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="OrdersLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=834877843]
+layout_mode = 2
+text = "Available Orders"
+
+[node name="OrdersListContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=671880033]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="MainMenuButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=486444962]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Main Menu"
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=344536852]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"
+
+[node name="PreviewPanel" type="PanelContainer" parent="." unique_id=2118700698]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -130.0
+offset_right = 160.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_d1od2")
+
+[node name="MarginContainer" type="MarginContainer" parent="PreviewPanel" unique_id=1570898680]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PreviewPanel/MarginContainer" unique_id=907830189]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PreviewOrderId" type="Label" parent="PreviewPanel/MarginContainer/VBoxContainer" unique_id=1480833982]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Order: "
+
+[node name="PreviewCustomer" type="Label" parent="PreviewPanel/MarginContainer/VBoxContainer" unique_id=2089292400]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Customer: "
+
+[node name="PreviewBatter" type="Label" parent="PreviewPanel/MarginContainer/VBoxContainer" unique_id=1677021576]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Batter: "
+
+[node name="PreviewTime" type="Label" parent="PreviewPanel/MarginContainer/VBoxContainer" unique_id=624695150]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Time Limit: "
+
+[node name="StartOrderButton" type="Button" parent="PreviewPanel/MarginContainer/VBoxContainer" unique_id=1462434331]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start Order"
+
+[node name="ClosePreviewButton" type="Button" parent="PreviewPanel/MarginContainer/VBoxContainer" unique_id=1324892769]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cancel"
+
+[node name="OrderResults" type="PanelContainer" parent="." unique_id=624424979]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -130.0
+offset_right = 160.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_d1od2")
+
+[node name="MarginContainer" type="MarginContainer" parent="OrderResults" unique_id=153146660]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OrderResults/MarginContainer" unique_id=1607022922]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PreviewOrderId" type="Label" parent="OrderResults/MarginContainer/VBoxContainer" unique_id=528331349]
+layout_mode = 2
+text = "Order: "
+
+[node name="PreviewCustomer" type="Label" parent="OrderResults/MarginContainer/VBoxContainer" unique_id=2076398208]
+layout_mode = 2
+text = "Customer: "
+
+[node name="TopScore" type="Label" parent="OrderResults/MarginContainer/VBoxContainer" unique_id=1598882781]
+layout_mode = 2
+text = "Top Score"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OrderResults/MarginContainer/VBoxContainer/TopScore" unique_id=190933663]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 280.0
+offset_bottom = 47.0
+
+[node name="TopFrosting" type="Label" parent="OrderResults/MarginContainer/VBoxContainer/TopScore/HBoxContainer" unique_id=1865451303]
+layout_mode = 2
+text = "Frosting: "
+label_settings = SubResource("LabelSettings_ai34y")
+
+[node name="TopDecorations" type="Label" parent="OrderResults/MarginContainer/VBoxContainer/TopScore/HBoxContainer" unique_id=734795221]
+layout_mode = 2
+text = "Decorations:"
+label_settings = SubResource("LabelSettings_ai34y")
+
+[node name="SideScore" type="Label" parent="OrderResults/MarginContainer/VBoxContainer" unique_id=1208780646]
+layout_mode = 2
+text = "Side Score:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OrderResults/MarginContainer/VBoxContainer/SideScore" unique_id=440962031]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 280.0
+offset_bottom = 47.0
+
+[node name="SideFrosting" type="Label" parent="OrderResults/MarginContainer/VBoxContainer/SideScore/HBoxContainer" unique_id=504119133]
+layout_mode = 2
+text = "Frosting: "
+label_settings = SubResource("LabelSettings_ai34y")
+
+[node name="SideDecorations" type="Label" parent="OrderResults/MarginContainer/VBoxContainer/SideScore/HBoxContainer" unique_id=196037754]
+layout_mode = 2
+text = "Decorations:"
+label_settings = SubResource("LabelSettings_ai34y")
+
+[node name="StartOrderButton" type="Button" parent="OrderResults/MarginContainer/VBoxContainer" unique_id=1328265104]
+layout_mode = 2
+text = "Start Order"
+
+[node name="ClosePreviewButton" type="Button" parent="OrderResults/MarginContainer/VBoxContainer" unique_id=1020723570]
+layout_mode = 2
+text = "Cancel"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="PreviewPanel/MarginContainer/VBoxContainer/StartOrderButton" to="." method="_on_start_order_button_pressed"]
+[connection signal="pressed" from="PreviewPanel/MarginContainer/VBoxContainer/ClosePreviewButton" to="." method="_on_close_preview_button_pressed"]
+[connection signal="pressed" from="OrderResults/MarginContainer/VBoxContainer/StartOrderButton" to="." method="_on_start_order_button_pressed"]
+[connection signal="pressed" from="OrderResults/MarginContainer/VBoxContainer/ClosePreviewButton" to="." method="_on_close_preview_button_pressed"]

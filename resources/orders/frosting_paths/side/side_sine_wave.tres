@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PathPlacement" format=3 uid="uid://7tybtb7ae1tu"]
+
+[ext_resource type="Script" uid="uid://b2kb2b7ba6qri" path="res://resources/path_placement.gd" id="1_pehop"]
+
+[resource]
+script = ExtResource("1_pehop")
+color = Color(0.4, 0.9, 0.5, 1)
+width = 7.0
+style = "side_sine"

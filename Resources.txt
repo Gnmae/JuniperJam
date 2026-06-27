@@ -5,3 +5,6 @@ Keystroke Sound: https://pixabay.com/sound-effects/film-special-effects-mechanic
 
 Chutter Click: https://pixabay.com/sound-effects/technology-chutter-click-494024/
 - chutter click, pixabay
+
+Mouse Click: https://pixabay.com/sound-effects/film-special-effects-computer-mouse-click-352734/
+- Computer Mouse Click, pixabay

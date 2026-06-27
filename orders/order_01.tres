@@ -4,23 +4,33 @@
 [ext_resource type="Script" uid="uid://cswvdqpj5qvt1" path="res://resources/decoration_placement.gd" id="2_xit6o"]
 [ext_resource type="Script" uid="uid://bpmiolsmmanfw" path="res://resources/dot_placement.gd" id="3_usqo1"]
 [ext_resource type="Script" uid="uid://b2kb2b7ba6qri" path="res://resources/path_placement.gd" id="4_3njm6"]
+[ext_resource type="Resource" uid="uid://7tybtb7ae1tu" path="res://resources/orders/frosting_paths/side/side_sine_wave.tres" id="4_xug0e"]
+[ext_resource type="Script" uid="uid://dyavqgx1nlq8o" path="res://resources/SideDecorations.gd" id="5_hcjpc"]
 [ext_resource type="Script" uid="uid://cdr7mm2qje1o5" path="res://resources/top_decorations.gd" id="5_xug0e"]
+
+[sub_resource type="Resource" id="Resource_ifm77"]
+script = ExtResource("2_xit6o")
+position = Vector2(8.94, 0)
+metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
+
+[sub_resource type="Resource" id="Resource_ymeay"]
+script = ExtResource("5_hcjpc")
+frosting_paths = Array[ExtResource("4_3njm6")]([ExtResource("4_xug0e")])
+decorations = Array[ExtResource("2_xit6o")]([SubResource("Resource_ifm77")])
+metadata/_custom_type_script = "uid://dyavqgx1nlq8o"
 
 [sub_resource type="Resource" id="Resource_xit6o"]
 script = ExtResource("2_xit6o")
-id = "candle"
 position = Vector2(-50, 10)
 metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
 
 [sub_resource type="Resource" id="Resource_usqo1"]
 script = ExtResource("2_xit6o")
-id = "candle"
 position = Vector2(20, 10)
 metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
 
 [sub_resource type="Resource" id="Resource_3njm6"]
 script = ExtResource("2_xit6o")
-id = "candle"
 position = Vector2(50, 10)
 metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
 
@@ -31,6 +41,8 @@ metadata/_custom_type_script = "uid://cdr7mm2qje1o5"
 
 [resource]
 script = ExtResource("1_tanqh")
-order_id = "order_01"
+customer_name = "Gweedar"
+cake_batter_type = "yellow_sponge"
 top_decorations = SubResource("Resource_xug0e")
+side_decoration = SubResource("Resource_ymeay")
 metadata/_custom_type_script = "uid://bt5w2qxhur6ni"
