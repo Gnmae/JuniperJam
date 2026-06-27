@@ -83,6 +83,10 @@ var _dollop_accuracy_sum: float = 0.0
 var _dollop_accuracy_count: int = 0
 var frosting_accuracy: float = 0.0
 
+var decoration_accuracy: float = 0.0
+var _decoration_score_sum: float = 0.0
+var _decoration_score_count: int = 0
+
 func _ready() -> void:
 	if current_order == null:
 		current_order = Order.get_order("order_02")
@@ -264,13 +268,59 @@ func _process(delta: float) -> void:
 			if dollop_count < max_frosting_dollops:
 				place_single_dollop(pos)
 
+func _calculate_decoration_accuracy() -> void:
+	_decoration_score_sum = 0.0
+	_decoration_score_count = 0
+
+	if decoration_targets.is_empty() or GameSession.session_result == null:
+		decoration_accuracy = 0.0
+		return
+
+	var placed := GameSession.session_result.top_decorations_placed
+
+	for target in decoration_targets:
+		if not is_instance_valid(target):
+			continue
+
+		var target_id: String = target.get_meta("decoration_id", "")
+		if target_id == "":
+			continue
+
+		var best_distance := INF
+
+		for p in placed:
+			if p.id != target_id:
+				continue
+			var dist := p.position.distance_to(target.position)
+			if dist < best_distance:
+				best_distance = dist
+
+		if best_distance == INF:
+			continue
+
+		var max_tolerance := 60.0
+		var score : float = clamp(1.0 - best_distance / max_tolerance, 0.0, 1.0)
+
+		_decoration_score_sum += score
+		_decoration_score_count += 1
+
+	if _decoration_score_count > 0:
+		decoration_accuracy = _decoration_score_sum / float(_decoration_score_count)
+	else:
+		decoration_accuracy = 0.0
+
+	print("Decoration accuracy: ", decoration_accuracy)
+
 func spin_update(_delta: float) -> void:
 	last_mouse_pos = get_global_mouse_position()
 
 func spin_enter() -> void:
 	state = STATE.SPIN
 	update_phase_label()
-
+	
+	spawn_decoration_targets()
+	_setup_frosting_guide()
+	
 	if next_button:
 		next_button.hide()
 
@@ -450,8 +500,7 @@ func decorate_enter() -> void:
 		next_button.text = "Finish Early"
 		next_button.show()
 
-	spawn_decoration_targets()
-	_setup_frosting_guide()
+
 	state = STATE.DECORATE
 
 func decorate_update(delta: float) -> void:
@@ -474,29 +523,6 @@ func decorate_update(delta: float) -> void:
 		state = STATE.DONE
 		done_enter()
 
-func done_enter() -> void:
-	if _dollop_accuracy_count > 0:
-		frosting_accuracy = _dollop_accuracy_sum / float(_dollop_accuracy_count)
-	else:
-		frosting_accuracy = 0.0
-	print("Frosting accuracy: ", frosting_accuracy)
-	
-	set_active_tool("")
-	decoration_pointer.hide()
-	for btn in _tool_buttons.values():
-		btn.disabled = true
-	next_button.text = "Next Step!"
-	_save_decorations_to_session()
-	update_phase_label()
-	finished.emit()
-	
-	
-	print("Frosting accuracy: ", frosting_accuracy)
-	_save_decorations_to_session()
-	update_phase_label()
-	finished.emit()
-
-	
 
 func _on_next_button_pressed() -> void:
 	if state == STATE.DECORATE:
@@ -539,8 +565,42 @@ func stop_clock_shake() -> void:
 	is_shaking_clock = false
 	if clock_sprite:
 		clock_sprite.position = original_clock_position
+func done_enter() -> void:
+	_save_decorations_to_session()
 
-# DECORATION TARGETS
+	_calculate_decoration_accuracy()
+
+	if _dollop_accuracy_count > 0:
+		frosting_accuracy = _dollop_accuracy_sum / float(_dollop_accuracy_count)
+	else:
+		frosting_accuracy = 0.0
+
+	print("Frosting accuracy: ", frosting_accuracy)
+
+	if GameSession.session_result != null:
+		GameSession.session_result.top_frosting_accuracy = frosting_accuracy
+		GameSession.session_result.top_decoration_accuracy = decoration_accuracy
+		var combined := (frosting_accuracy + decoration_accuracy) / 2.0
+		GameSession.session_result.top_final_score = int(combined * 100)
+
+	set_active_tool("")
+	decoration_pointer.hide()
+
+	for btn in _tool_buttons.values():
+		btn.disabled = true
+
+	update_phase_label()
+	finished.emit()
+func _on_top_decoration_finished() -> void:
+	if GameSession.session_result == null:
+		return
+
+	var final_score := GameSession.session_result.top_final_score
+	var order_id := ""
+	if GameSession.current_order != null:
+		order_id = GameSession.current_order.id
+
+	GameSession.complete_order(order_id, final_score)
 func spawn_decoration_targets() -> void:
 	for t in decoration_targets:
 		if is_instance_valid(t):
@@ -549,16 +609,41 @@ func spawn_decoration_targets() -> void:
 
 	if current_order == null:
 		return
-	var top = current_order.get_top_decorations()
-	for dec in top.decorations:
-		var target = Decoration.instantiate_decoration_target()
+
+	var top_decs = current_order.get_top_decorations()
+	if top_decs == null:
+		return
+
+	var placements: Array = []
+	if "decorations" in top_decs:
+		placements = top_decs.decorations
+	elif top_decs.has_method("get_decorations"):
+		placements = top_decs.get_decorations()
+
+	if placements.is_empty():
+		return
+
+	var target_scene_path: String = Constants.SCENE_PATHS.get("decoration_target", "")
+	if target_scene_path == "":
+		push_error("Missing 'decoration_target' in Constants.SCENE_PATHS")
+		return
+
+	for placement in placements:
+		if placement == null or placement.id == "":
+			continue
+
+		var target: DecorationTarget = load(target_scene_path).instantiate()
 		cake_top_sprite.add_child(target)
-		target.setup(dec)
-		target.position = dec.position
-		target.rotation_degrees = dec.rotation_degrees
-		target.scale = dec.scale
+
+		target.position = placement.position
+		target.rotation_degrees = placement.rotation_degrees
+		target.scale = placement.scale
+
+		target.setup(placement)                    # Pass the DecorationPlacement directly
+
+		target.set_meta("decoration_id", placement.id)
+		target.set_meta("is_target", true)
 		decoration_targets.append(target)
-		target.set_meta("decoration_id", dec.id)
 
 # UI CALLBACKS
 func _on_speed_slider_changed(value: float) -> void:
