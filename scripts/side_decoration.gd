@@ -46,19 +46,24 @@ func _ready() -> void:
 	if frosting_tool_button:
 		frosting_tool_button.toggled.connect(_on_frosting_tool_toggled)
 
+	#decorate_timer = decorate_time
+	timer_progress_bar.max_value = decorate_time
+	timer_progress_bar.value = decorate_time
+	time_label.text = str(int(decorate_time))
+	
+	Global.sound_manager.play("TickingSound")
+
 func _load_order() -> void:
 	var order = GameSession.current_order
 	if order == null:
 		return
 
-	decorate_timer = order.time_limit_seconds / 2.0  
-	timer_progress_bar.max_value = decorate_timer     
-	time_label.text = str(int(decorate_timer))
-
 	var band = $CakeWindow/SubViewport/ParallaxBackground/CakeBandLayer/CakeBandA
 	if band and order.cake_base_color:
 		band.color = order.cake_base_color
-
+	
+	decorate_time = order.time_limit_seconds
+	decorate_timer = order.time_left
 	_setup_guide_lines(order)
 	spawn_side_decoration_targets()
 
@@ -236,6 +241,7 @@ func _input(event: InputEvent) -> void:
 func _start_frosting() -> void:
 	is_drawing_frosting = true
 	last_dollop_position = _mouse_to_strip_pos()
+	_place_single_dollop(last_dollop_position)
 
 func _end_frosting() -> void:
 	is_drawing_frosting = false
@@ -250,8 +256,6 @@ func _place_frosting_dollops() -> void:
 		var direction := delta.normalized()
 		var steps := int(distance / dollop_spacing)
 		for i in range(1, steps + 1):
-			if dollop_count >= max_frosting_dollops:
-				break
 			var pos := last_dollop_position + direction * dollop_spacing * i
 			pos.x = fposmod(pos.x, strip_width)
 			_place_single_dollop(pos)
@@ -282,6 +286,7 @@ func _place_single_dollop(pos: Vector2) -> void:
 	dollop.modulate = frosting_color
 	dollop_count += 1
 	_record_dollop_accuracy(pos)
+	Global.sound_manager.play("SwishSound")
 
 func _mouse_to_strip_pos() -> Vector2:
 	var local := cake_window.get_local_mouse_position()
@@ -339,6 +344,8 @@ func _finish() -> void:
 	if GameSession.session_result:
 		GameSession.session_result.side_frosting_accuracy = frosting_accuracy
 		GameSession.session_result.side_decoration_accuracy = decoration_accuracy
+
+	Global.sound_manager.stop("TickingSound")
 
 	phase_label.text = "Done!"
 	if next_button:

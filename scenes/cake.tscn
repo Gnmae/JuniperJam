@@ -8,6 +8,8 @@
 [ext_resource type="Shader" uid="uid://cbxat23mxroof" path="res://assets/shaders/cake_top.gdshader" id="4_yl5fd"]
 [ext_resource type="Texture2D" uid="uid://bttfxfim86sbh" path="res://assets/sprites/decoration_pointer-sheetx32.png" id="7_hrrm1"]
 [ext_resource type="Texture2D" uid="uid://ce2n1aiib30pp" path="res://assets/sprites/candle_top.png" id="7_msnv4"]
+[ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="7_v8acl"]
+[ext_resource type="PackedScene" uid="uid://65qph7dmwyaf" path="res://scenes/order_ticket.tscn" id="8_pfbaa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t5xhs"]
 shader = ExtResource("4_yl5fd")
@@ -20,11 +22,12 @@ region = Rect2(11, 11, 329, 329)
 [sub_resource type="GDScript" id="GDScript_yl5fd"]
 script/source = "extends Sprite2D
 
-var previous_rotation : float = 0.0
+var current_rotation_speed : float = 0.0
 var rotation_speed : float = 10.0
 
 func _process(delta: float) -> void:
-	rotate(deg_to_rad(rotation_speed*delta))
+	current_rotation_speed = lerpf(current_rotation_speed, rotation_speed, 4.0*delta)
+	rotate(deg_to_rad(current_rotation_speed) * delta)
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ai34y"]
@@ -91,11 +94,13 @@ offset_right = 110.0
 offset_bottom = 313.0
 
 [node name="SpinToggleButton" type="CheckButton" parent="SpinControls/VBoxContainer" unique_id=411920023]
+visible = false
 layout_mode = 2
 button_pressed = true
 text = "Spin"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SpinControls/VBoxContainer" unique_id=71396094]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -117,8 +122,13 @@ layout_mode = 2
 text = "1x"
 
 [node name="ReverseButton" type="CheckButton" parent="SpinControls/VBoxContainer" unique_id=218272623]
+visible = false
 layout_mode = 2
 text = "Reverse"
+
+[node name="SpeedLabel3" type="Label" parent="SpinControls/VBoxContainer" unique_id=146438859]
+layout_mode = 2
+text = "Speed : 0.0"
 
 [node name="TimerControls" type="Control" parent="." unique_id=1631754811]
 z_index = 5
@@ -180,8 +190,16 @@ layout_mode = 2
 text = "Speed Select"
 
 [node name="NextButton" type="Button" parent="DebugControls/VBoxContainer" unique_id=86123086]
+texture_filter = 2
 layout_mode = 2
+theme = ExtResource("7_v8acl")
 text = "Finish Early!"
+
+[node name="OrderToggleButton" type="Button" parent="DebugControls/VBoxContainer" unique_id=2111780085]
+texture_filter = 2
+layout_mode = 2
+theme = ExtResource("7_v8acl")
+text = "Toggle Order"
 
 [node name="DecorationControls" type="Control" parent="." unique_id=1211903953]
 z_index = 5
@@ -222,6 +240,14 @@ size_flags_horizontal = 4
 toggle_mode = true
 texture_normal = ExtResource("7_msnv4")
 
+[node name="OrderTicket" parent="." unique_id=542798802 instance=ExtResource("8_pfbaa")]
+visible = false
+z_index = 3
+offset_left = -71.0
+offset_top = -29.0
+offset_right = 576.0
+offset_bottom = 323.0
+
 [node name="DecorationPointer" type="Sprite2D" parent="." unique_id=410159151]
 visible = false
 z_index = 5
@@ -229,3 +255,4 @@ texture = SubResource("AtlasTexture_yl5fd")
 
 [connection signal="input_event" from="PlateArea2D" to="Plate" method="_on_plate_area_2d_input_event"]
 [connection signal="pressed" from="DebugControls/VBoxContainer/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="DebugControls/VBoxContainer/OrderToggleButton" to="." method="_on_order_toggle_button_pressed"]

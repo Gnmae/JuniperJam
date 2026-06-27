@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://bp6bmverypc85"]
 
 [ext_resource type="Script" uid="uid://bd36ggvjkjx4p" path="res://scripts/spin_speed.gd" id="1_e0td7"]
+[ext_resource type="Texture2D" uid="uid://7p7jtkqwl4b0" path="res://assets/backgrounds/cake_game_background.png" id="2_0vfjo"]
+[ext_resource type="Script" uid="uid://d1ekpqyo45v1f" path="res://scripts/ui/button.gd" id="2_5cgrk"]
+[ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="2_b42t5"]
 
 [node name="SpinSpeed" type="Control" unique_id=973816418]
 layout_mode = 3
@@ -11,22 +14,39 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_e0td7")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1159316520]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=681676542]
+z_index = -2
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_0vfjo")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1479015965]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_b42t5")
 
-[node name="Spin Label" type="Label" parent="VBoxContainer" unique_id=733454165]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1159316520]
+layout_mode = 2
+theme = ExtResource("2_b42t5")
+alignment = 2
+
+[node name="Spin Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=733454165]
+visible = false
 layout_mode = 2
 
-[node name="Spin Button" type="Button" parent="VBoxContainer" unique_id=1822871001]
+[node name="Spin Button" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1822871001]
 visible = false
 layout_mode = 2
 text = "Spin"
 
-[node name="NextButton" type="Button" parent="VBoxContainer" unique_id=2068784358]
+[node name="NextButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=2068784358]
+texture_filter = 2
 layout_mode = 2
-text = "Begin Cake Decoration"
+text = "Start Decorating"
+script = ExtResource("2_5cgrk")

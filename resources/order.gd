@@ -18,6 +18,7 @@ func _init(p_id: String = "order_01", p_customer: String = "Customer"):
 	customer_name = p_customer
 	if top_decorations == null:
 		top_decorations = TopDecorations.new()
+	time_left = time_limit_seconds
 
 func get_top_decorations() -> TopDecorations:
 	if top_decorations == null:

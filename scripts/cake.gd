@@ -42,6 +42,7 @@ extends Node2D
 @onready var tool_button_container: HBoxContainer = $DecorationControls/HBoxContainer
 @onready var decoration_pointer: Sprite2D = $DecorationPointer
 
+@onready var order_ticket: Control = $OrderTicket
 
 const POINTER_ATLAS_TILE_SIZE := 32
 var _pointer_base_texture: Texture2D = null
@@ -131,6 +132,7 @@ func _on_tool_button_pressed(tool_id: String) -> void:
 		set_active_tool("")
 		return
 	set_active_tool(tool_id)
+	Global.sound_manager.play("MouseClickSound")
 
 func set_active_tool(tool_id: String) -> void:
 	if active_tool == "frosting":
@@ -312,7 +314,20 @@ func _calculate_decoration_accuracy() -> void:
 	print("Decoration accuracy: ", decoration_accuracy)
 
 func spin_update(_delta: float) -> void:
-	last_mouse_pos = get_global_mouse_position()
+	var current_mouse_pos = get_global_mouse_position()
+	
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		var mouse_y_movement = (last_mouse_pos + current_mouse_pos).y
+		if mouse_y_movement > 0.0:
+			cake_top_sprite.rotation_speed += mouse_y_movement * 0.001
+			cake_top_sprite.rotation_speed = clampf(cake_top_sprite.rotation_speed, min_speed, max_speed)
+			hand_sprite.show()
+		else:
+			hand_sprite.hide()
+		$SpinControls/VBoxContainer/SpeedLabel3.text = "Speed : " + str(floor(cake_top_sprite.current_rotation_speed))
+	last_mouse_pos = current_mouse_pos
+	if cake_top_sprite.current_rotation_speed > 5.0:
+		Global.sound_manager.play("PlateSpinningSound")
 
 func spin_enter() -> void:
 	state = STATE.SPIN
@@ -325,18 +340,18 @@ func spin_enter() -> void:
 		next_button.hide()
 
 	var elapsed := 0.0
-	var ramp_duration := spin_time * 0.6
-	var target_speed := last_active_speed * last_direction
+	#var ramp_duration := spin_time * 0.6
+	#var target_speed := last_active_speed * last_direction
 
 	while elapsed < spin_time:
 		var delta := get_process_delta_time()
 		elapsed += delta
 
-		if elapsed < ramp_duration:
-			var t := elapsed / ramp_duration
-			cake_top_sprite.rotation_speed = lerp(0.0, target_speed, t)
-		else:
-			cake_top_sprite.rotation_speed = target_speed
+		#if elapsed < ramp_duration:
+			#var t := elapsed / ramp_duration
+			#cake_top_sprite.rotation_speed = lerp(0.0, target_speed, t)
+		#else:
+			#cake_top_sprite.rotation_speed = target_speed
 
 		var remaining := spin_time - elapsed
 		if remaining <= 3.0 and phase_label:
@@ -345,8 +360,9 @@ func spin_enter() -> void:
 
 		await get_tree().process_frame
 
-	cake_top_sprite.rotation_speed = target_speed
+	#cake_top_sprite.rotation_speed = target_speed
 	decorate_enter()
+
 
 func setup_containers() -> void:
 	if not frosting_container:
@@ -486,6 +502,7 @@ func place_single_dollop(pos: Vector2) -> void:
 	dollop.modulate = frosting_color
 	dollop_count += 1
 	_record_dollop_accuracy(pos)
+	Global.sound_manager.play("SwishSound")
 
 func end_frosting() -> void:
 	is_drawing_frosting = false
@@ -500,6 +517,7 @@ func decorate_enter() -> void:
 		next_button.text = "Finish Early"
 		next_button.show()
 
+	Global.sound_manager.play("TickingSound")
 
 	state = STATE.DECORATE
 
@@ -522,10 +540,13 @@ func decorate_update(delta: float) -> void:
 		decorate_timer = 0
 		state = STATE.DONE
 		done_enter()
+	if cake_top_sprite.current_rotation_speed > 5.0:
+		Global.sound_manager.play("PlateSpinningSound")
 
 
 func _on_next_button_pressed() -> void:
 	if state == STATE.DECORATE:
+		GameSession.current_order.time_left = decorate_timer
 		decorate_timer = 0
 		state = STATE.DONE
 		done_enter()
@@ -588,9 +609,11 @@ func done_enter() -> void:
 
 	for btn in _tool_buttons.values():
 		btn.disabled = true
-
+	
+	cake_top_sprite.rotation_speed = 0.0
 	update_phase_label()
 	finished.emit()
+	Global.sound_manager.stop("TickingSound")
 func _on_top_decoration_finished() -> void:
 	if GameSession.session_result == null:
 		return
@@ -632,7 +655,7 @@ func spawn_decoration_targets() -> void:
 		if placement == null or placement.id == "":
 			continue
 
-		var target: DecorationTarget = load(target_scene_path).instantiate()
+		var target : DecorationTarget = load(target_scene_path).instantiate()
 		cake_top_sprite.add_child(target)
 
 		target.position = placement.position
@@ -691,3 +714,10 @@ func clear_frosting() -> void:
 		for child in frosting_container.get_children():
 			child.queue_free()
 	dollop_count = 0
+
+
+func _on_order_toggle_button_pressed() -> void:
+	if order_ticket.visible:
+		order_ticket.hide()
+		return
+	order_ticket.show()

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cy3j832soqqvf" path="res://scripts/main_menu.gd" id="1_wu84c"]
 [ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="2_8ln24"]
+[ext_resource type="Texture2D" uid="uid://7p7jtkqwl4b0" path="res://assets/backgrounds/cake_game_background.png" id="2_oa1go"]
 [ext_resource type="PackedScene" uid="uid://d1fi38dtd646i" path="res://scenes/UI/AnimatedButton.tscn" id="3_8ln24"]
 [ext_resource type="Script" uid="uid://d1ekpqyo45v1f" path="res://scripts/ui/button.gd" id="3_rtw2f"]
 [ext_resource type="Script" uid="uid://drthbisi3ut1" path="res://scripts/ui/ui_style_box.gd" id="4_8ln24"]
@@ -26,6 +27,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 0.5254902, 0.5647059, 1)
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1389065073]
+z_index = -2
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_oa1go")
 
 [node name="MainMenuUI" type="MarginContainer" parent="." unique_id=533083169]
 unique_name_in_owner = true

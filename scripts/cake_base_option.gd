@@ -46,6 +46,7 @@ func set_selected(selected: bool) -> void:
 
 func _on_hover_enter() -> void:
 	_update_visuals(true)
+	Global.sound_manager.play("ChutterClickSound")
 
 
 func _on_hover_exit() -> void:

@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://65qph7dmwyaf"]
 
 [ext_resource type="Script" uid="uid://cqf5e8w08hft4" path="res://scripts/order_ticket.gd" id="1_is44k"]
-[ext_resource type="Script" uid="uid://cnhwpgff6voox" path="res://tools/cake_preview.gd" id="3_is44k"]
+[ext_resource type="Texture2D" uid="uid://7p7jtkqwl4b0" path="res://assets/backgrounds/cake_game_background.png" id="2_rqim4"]
+[ext_resource type="Script" uid="uid://d1ekpqyo45v1f" path="res://scripts/ui/button.gd" id="3_is44k"]
+[ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="3_rqim4"]
 [ext_resource type="Texture2D" uid="uid://ci0odwl8xq4me" path="res://assets/sprites/9patch.png" id="3_y7odh"]
-[ext_resource type="Resource" uid="uid://1wc2u0di81mg" path="res://orders/order_01.tres" id="4_y7odh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_t5xhs"]
 font_size = 30
@@ -20,6 +21,16 @@ offset_top = 108.0
 offset_right = 935.0
 offset_bottom = 460.0
 script = ExtResource("1_is44k")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=47071425]
+z_index = -2
+layout_mode = 0
+offset_left = -288.0
+offset_top = -108.0
+offset_right = 1632.0
+offset_bottom = 972.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_rqim4")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=2107549073]
 layout_mode = 1
@@ -75,16 +86,8 @@ text = "Time Limit
 "
 label_settings = SubResource("LabelSettings_n5bth")
 
-[node name="CakePreviewControl" type="Control" parent="NinePatchRect" unique_id=1852480103]
-anchors_preset = 0
-offset_left = 301.0
-offset_top = 114.0
-offset_right = 601.0
-offset_bottom = 280.0
-script = ExtResource("3_is44k")
-order = ExtResource("4_y7odh")
-
 [node name="NextButton" type="Button" parent="." unique_id=1660258224]
+texture_filter = 2
 layout_mode = 0
 offset_left = 440.0
 offset_top = 388.0
@@ -93,6 +96,8 @@ offset_bottom = 441.0
 size_flags_horizontal = 4
 size_flags_vertical = 3
 mouse_filter = 1
+theme = ExtResource("3_rqim4")
 theme_override_font_sizes/font_size = 32
 text = "Next"
 icon_alignment = 1
+script = ExtResource("3_is44k")

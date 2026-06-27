@@ -5,7 +5,9 @@
 [ext_resource type="AudioStream" uid="uid://djp6wd02terb5" path="res://assets/sounds/keystroke_sound.wav" id="3_6k21d"]
 [ext_resource type="AudioStream" uid="uid://cjtmvj1xm6es1" path="res://assets/sounds/chutter_click.wav" id="4_cjhpt"]
 [ext_resource type="AudioStream" uid="uid://behvujoa51jnw" path="res://assets/sounds/mouse_click.wav" id="5_q7wi7"]
-[ext_resource type="AudioStream" uid="uid://cge1vu0k1knvh" path="res://assets/sounds/plate_spinning_sound.wav" id="6_6k21d"]
+[ext_resource type="AudioStream" uid="uid://dpp6l2lxmq3bs" path="res://assets/sounds/swish_sound.wav" id="6_hhobr"]
+[ext_resource type="AudioStream" uid="uid://cge1vu0k1knvh" path="res://assets/sounds/plate_spinning_sound.wav" id="7_wofdf"]
+[ext_resource type="AudioStream" uid="uid://b2g8v1cyfnn5v" path="res://assets/sounds/ticking_sound.wav" id="8_kad1h"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_6k21d"]
 random_pitch = 1.0594631
@@ -21,6 +23,11 @@ stream_0/stream = ExtResource("4_cjhpt")
 random_pitch = 1.0594631
 streams_count = 1
 stream_0/stream = ExtResource("5_q7wi7")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2lhpl"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("6_hhobr")
 
 [node name="SceneManager" type="Node" unique_id=1255692518 node_paths=PackedStringArray("world_2d", "ui")]
 script = ExtResource("1_h7lqg")
@@ -44,7 +51,7 @@ mouse_filter = 1
 script = ExtResource("2_q7wi7")
 
 [node name="KeystrokeSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1219575738]
-stream = SubResource("AudioStreamRandomizer_6k21d")
+stream = SubResource("AudioStreamRandomizer_4sjmi")
 max_polyphony = 3
 bus = &"Sounds"
 
@@ -59,7 +66,15 @@ stream = SubResource("AudioStreamRandomizer_05ayi")
 max_polyphony = 3
 bus = &"Sounds"
 
-[node name="PlateSpinningSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1587700072]
-stream = ExtResource("6_6k21d")
-volume_db = -10.0
+[node name="SwishSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=858802413]
+stream = SubResource("AudioStreamRandomizer_2lhpl")
+max_polyphony = 2
+bus = &"Sounds"
+
+[node name="PlateSpinningSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1827913313]
+stream = ExtResource("7_wofdf")
+bus = &"Sounds"
+
+[node name="TickingSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=621150511]
+stream = ExtResource("8_kad1h")
 bus = &"Sounds"
