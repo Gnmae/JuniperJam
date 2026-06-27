@@ -16,7 +16,8 @@ grow_vertical = 2
 script = ExtResource("1_sdeco")
 
 [node name="CakeWindow" type="SubViewportContainer" parent="." unique_id=444722441]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -131,7 +132,6 @@ toggle_mode = true
 text = "Frosting"
 
 [node name="NextButton" type="Button" parent="UI" unique_id=339802646]
-visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -143,4 +143,4 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "Next"
+text = "Finish Early!"

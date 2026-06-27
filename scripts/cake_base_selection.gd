@@ -71,6 +71,9 @@ func _on_confirm_button_pressed() -> void:
 		return
 	
 	var data: Dictionary = selected_option.option_data if "option_data" in selected_option else {}
+	print("Saving cake_base_data: ", data) # confirm it has color
+	
+	GameSession.cake_base_data = data
 	
 	if GameSession and GameSession.session_result:
 		var result = GameSession.session_result
@@ -80,4 +83,3 @@ func _on_confirm_button_pressed() -> void:
 	
 	Global.scene_manager.change_world_2d_scene("")
 	Global.scene_manager.change_ui_scene(Constants.SCENE_PATHS.spin_speed)
-	#get_tree().change_scene_to_file(Constants.SCENE_PATHS.spin_speed)

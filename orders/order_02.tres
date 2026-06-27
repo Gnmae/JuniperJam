@@ -7,9 +7,14 @@
 [ext_resource type="Script" uid="uid://cdr7mm2qje1o5" path="res://resources/top_decorations.gd" id="5_21lfe"]
 [ext_resource type="Resource" uid="uid://bem8woigke85d" path="res://resources/orders/frosting_paths/circle_path.tres" id="5_tep6m"]
 
+[sub_resource type="Resource" id="Resource_msnv4"]
+script = ExtResource("3_tnxdc")
+metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
+
 [sub_resource type="Resource" id="Resource_hrrm1"]
 script = ExtResource("5_21lfe")
 frosting_paths = Array[ExtResource("1_be60t")]([ExtResource("5_tep6m")])
+decorations = Array[ExtResource("3_tnxdc")]([SubResource("Resource_msnv4")])
 metadata/_custom_type_script = "uid://cdr7mm2qje1o5"
 
 [resource]

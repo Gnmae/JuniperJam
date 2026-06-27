@@ -1,31 +1,30 @@
-[gd_scene format=3 uid="uid://cxqdlgqpte2sp"]
+[gd_scene format=3 uid="uid://dmsc35y2hrm1a"]
 
 [ext_resource type="Script" uid="uid://dxnouwxt27qdf" path="res://scripts/cake.gd" id="1_yl5fd"]
 [ext_resource type="Texture2D" uid="uid://w3p020eiu0t2" path="res://assets/sprites/plate.png" id="2_icyrn"]
 [ext_resource type="Texture2D" uid="uid://5vwqa6dxrlxo" path="res://icon.svg" id="3_bg1l6"]
 [ext_resource type="Texture2D" uid="uid://cvdpp343xg2d4" path="res://assets/sprites/hand.png" id="4_bg1l6"]
+[ext_resource type="Texture2D" uid="uid://coi35qh8naqyf" path="res://assets/sprites/cake_game_sprites.png" id="4_hrrm1"]
 [ext_resource type="Shader" uid="uid://cbxat23mxroof" path="res://assets/shaders/cake_top.gdshader" id="4_yl5fd"]
-[ext_resource type="Texture2D" uid="uid://bqeitejsd5nkx" path="res://assets/sprites/frosting_pointer.png" id="7_hrrm1"]
+[ext_resource type="Texture2D" uid="uid://bttfxfim86sbh" path="res://assets/sprites/decoration_pointer-sheetx32.png" id="7_hrrm1"]
+[ext_resource type="Texture2D" uid="uid://ce2n1aiib30pp" path="res://assets/sprites/candle_top.png" id="7_msnv4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t5xhs"]
 shader = ExtResource("4_yl5fd")
-shader_parameter/base_color = Color(0.8392157, 0.45882353, 0.6666667, 1)
-shader_parameter/texture_scale = 34.5
-shader_parameter/noise_strength = 0.1310000062225
-shader_parameter/grain_strength = 0.30000001425
-shader_parameter/sheen_strength = 0.2800000133
-shader_parameter/sheen_direction = Vector2(0.65, -0.75)
-shader_parameter/saturation_variation = 0.1250000059375
+shader_parameter/base_color = Color(1, 0.98, 0.9, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ai34y"]
+atlas = ExtResource("4_hrrm1")
+region = Rect2(11, 11, 329, 329)
 
 [sub_resource type="GDScript" id="GDScript_yl5fd"]
 script/source = "extends Sprite2D
 
-var current_rotation_speed : float = 0.0
-var rotation_speed : float = 50.0
+var previous_rotation : float = 0.0
+var rotation_speed : float = 10.0
 
 func _process(delta: float) -> void:
-	current_rotation_speed = lerpf(current_rotation_speed, rotation_speed, 2.0 *  delta)
-	rotate(deg_to_rad(current_rotation_speed*delta))
+	rotate(deg_to_rad(rotation_speed*delta))
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ai34y"]
@@ -33,6 +32,14 @@ radius = 275.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t5xhs"]
 bg_color = Color(0, 0.68669873, 0.6861986, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrrm1"]
+atlas = ExtResource("4_hrrm1")
+region = Rect2(676, 284, 160, 205)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yl5fd"]
+atlas = ExtResource("7_hrrm1")
+region = Rect2(0, 0, 32, 32)
 
 [node name="Cake" type="Node2D" unique_id=1808201546]
 script = ExtResource("1_yl5fd")
@@ -45,10 +52,10 @@ scale = Vector2(8.34375, 8.34375)
 texture = ExtResource("2_icyrn")
 
 [node name="CakeTop" type="Sprite2D" parent="." unique_id=1261369442]
-z_index = 1
+z_index = 3
 material = SubResource("ShaderMaterial_t5xhs")
-scale = Vector2(2.53125, 2.53125)
-texture = ExtResource("3_bg1l6")
+scale = Vector2(1.241, 1.241)
+texture = SubResource("AtlasTexture_ai34y")
 script = SubResource("GDScript_yl5fd")
 
 [node name="FrostingContainer" type="Node2D" parent="CakeTop" unique_id=1448459367]
@@ -83,18 +90,12 @@ layout_mode = 0
 offset_right = 110.0
 offset_bottom = 313.0
 
-[node name="SpeedLabel3" type="Label" parent="SpinControls/VBoxContainer" unique_id=836781539]
-layout_mode = 2
-text = "Speed :"
-
 [node name="SpinToggleButton" type="CheckButton" parent="SpinControls/VBoxContainer" unique_id=411920023]
-visible = false
 layout_mode = 2
 button_pressed = true
 text = "Spin"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SpinControls/VBoxContainer" unique_id=71396094]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -116,7 +117,6 @@ layout_mode = 2
 text = "1x"
 
 [node name="ReverseButton" type="CheckButton" parent="SpinControls/VBoxContainer" unique_id=218272623]
-visible = false
 layout_mode = 2
 text = "Reverse"
 
@@ -179,9 +179,9 @@ text = "Phase:"
 layout_mode = 2
 text = "Speed Select"
 
-[node name="NextButton" type="Button" parent="DebugControls/VBoxContainer" unique_id=872504217]
+[node name="NextButton" type="Button" parent="DebugControls/VBoxContainer" unique_id=86123086]
 layout_mode = 2
-text = "Next!"
+text = "Finish Early!"
 
 [node name="DecorationControls" type="Control" parent="." unique_id=1211903953]
 z_index = 5
@@ -197,18 +197,35 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -57.5
+offset_right = -12.0
+offset_bottom = 57.5
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.74, 0.74)
 
-[node name="FrostingToolButton" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=1601285995]
+[node name="ToolButton_frosting" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=1601285995]
 layout_mode = 2
 size_flags_horizontal = 4
 toggle_mode = true
 texture_normal = ExtResource("3_bg1l6")
 
-[node name="FrostingPointer" type="Sprite2D" parent="." unique_id=410159151]
-texture = ExtResource("7_hrrm1")
+[node name="ToolButton_cherry" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=2064204686]
+layout_mode = 2
+size_flags_horizontal = 4
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_hrrm1")
+
+[node name="ToolButton_candle" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=1607915128]
+layout_mode = 2
+size_flags_horizontal = 4
+toggle_mode = true
+texture_normal = ExtResource("7_msnv4")
+
+[node name="DecorationPointer" type="Sprite2D" parent="." unique_id=410159151]
+visible = false
+z_index = 5
+texture = SubResource("AtlasTexture_yl5fd")
 
 [connection signal="input_event" from="PlateArea2D" to="Plate" method="_on_plate_area_2d_input_event"]
 [connection signal="pressed" from="DebugControls/VBoxContainer/NextButton" to="." method="_on_next_button_pressed"]
-[connection signal="pressed" from="DebugControls/VBoxContainer/NextButton" to="." method="_on_next_pressed"]
