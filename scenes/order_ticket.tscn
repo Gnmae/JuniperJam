@@ -4,7 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://7p7jtkqwl4b0" path="res://assets/backgrounds/cake_game_background.png" id="2_rqim4"]
 [ext_resource type="Script" uid="uid://d1ekpqyo45v1f" path="res://scripts/ui/button.gd" id="3_is44k"]
 [ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="3_rqim4"]
-[ext_resource type="Texture2D" uid="uid://ci0odwl8xq4me" path="res://assets/sprites/9patch.png" id="3_y7odh"]
+[ext_resource type="Texture2D" uid="uid://bpbln4b710nps" path="res://assets/sprites/ticket_top.png" id="5_hgyvt"]
+[ext_resource type="Theme" uid="uid://gpss0y3x5jbh" path="res://order_ticket_theme.tres" id="6_c1m8x"]
+[ext_resource type="Texture2D" uid="uid://vdygpqtxx7yp" path="res://assets/sprites/ticket_bot.png" id="7_3g6gj"]
+[ext_resource type="Texture2D" uid="uid://bc6i7c32fhe7b" path="res://assets/sprites/tack.png" id="8_c1m8x"]
+
+[sub_resource type="Theme" id="Theme_ai34y"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_t5xhs"]
 font_size = 30
@@ -18,8 +23,8 @@ layout_mode = 3
 anchors_preset = 0
 offset_left = 288.0
 offset_top = 108.0
-offset_right = 935.0
-offset_bottom = 460.0
+offset_right = 623.0
+offset_bottom = 575.0
 script = ExtResource("1_is44k")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=47071425]
@@ -31,60 +36,6 @@ offset_right = 1632.0
 offset_bottom = 972.0
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_rqim4")
-
-[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=2107549073]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_y7odh")
-patch_margin_left = 2
-patch_margin_top = 2
-patch_margin_right = 2
-patch_margin_bottom = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect" unique_id=1037430176]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="OrderHeaderLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=868719797]
-layout_mode = 2
-text = "ORDER #: 1"
-label_settings = SubResource("LabelSettings_t5xhs")
-
-[node name="CakeTypeLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=1378831075]
-layout_mode = 2
-text = "Cake Type Details
-- 
-"
-label_settings = SubResource("LabelSettings_n5bth")
-
-[node name="FrostingLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=1630733856]
-layout_mode = 2
-text = "Frosting Details
-- 
-"
-label_settings = SubResource("LabelSettings_n5bth")
-
-[node name="DecorationsLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=1831607038]
-layout_mode = 2
-text = "Decoration Details
-- 
-"
-label_settings = SubResource("LabelSettings_n5bth")
-
-[node name="TimeLimitLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=2082439389]
-layout_mode = 2
-text = "Time Limit
-- 
-"
-label_settings = SubResource("LabelSettings_n5bth")
 
 [node name="NextButton" type="Button" parent="." unique_id=1660258224]
 texture_filter = 2
@@ -101,3 +52,156 @@ theme_override_font_sizes/font_size = 32
 text = "Next"
 icon_alignment = 1
 script = ExtResource("3_is44k")
+
+[node name="Container" type="Control" parent="." unique_id=119165191]
+z_index = 2
+clip_contents = true
+layout_mode = 1
+anchor_left = 0.28500003
+anchor_top = 0.19900002
+anchor_right = 1.1580001
+anchor_bottom = 0.83400005
+offset_left = -19.475006
+offset_top = -92.93301
+offset_right = 23.069977
+offset_bottom = 77.52197
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container" unique_id=1023615011]
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.109000005
+anchor_top = 0.18200001
+anchor_right = 0.93000007
+anchor_bottom = 0.88100004
+offset_left = -36.515003
+offset_top = -84.994
+offset_right = 23.449982
+offset_bottom = 55.572968
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="Container/VBoxContainer" unique_id=876901633]
+z_index = 2
+layout_mode = 2
+texture = ExtResource("5_hgyvt")
+
+[node name="Panel" type="Panel" parent="Container/VBoxContainer" unique_id=66184601]
+z_index = 2
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("6_c1m8x")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/VBoxContainer/Panel" unique_id=1037430176]
+z_index = 2
+custom_maximum_size = Vector2(-1, 320.155)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 3.0
+offset_right = -191.70999
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ai34y")
+
+[node name="OrderHeaderLabel" type="Label" parent="Container/VBoxContainer/Panel/VBoxContainer" unique_id=868719797]
+z_index = 2
+layout_mode = 2
+text = "ORDER #: 1"
+label_settings = SubResource("LabelSettings_t5xhs")
+
+[node name="CakeTypeLabel" type="Label" parent="Container/VBoxContainer/Panel/VBoxContainer" unique_id=1378831075]
+z_index = 2
+layout_mode = 2
+text = "Cake Type Details
+- 
+"
+label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="FrostingLabel" type="Label" parent="Container/VBoxContainer/Panel/VBoxContainer" unique_id=1630733856]
+z_index = 2
+layout_mode = 2
+text = "Frosting Details
+- 
+"
+label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="DecorationsLabel" type="Label" parent="Container/VBoxContainer/Panel/VBoxContainer" unique_id=1831607038]
+z_index = 2
+layout_mode = 2
+text = "Decoration Details
+- 
+"
+label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="TimeLimitLabel" type="Label" parent="Container/VBoxContainer/Panel/VBoxContainer" unique_id=2082439389]
+z_index = 2
+layout_mode = 2
+text = "Time Limit
+- 
+"
+label_settings = SubResource("LabelSettings_n5bth")
+
+[node name="TextureRect2" type="TextureRect" parent="Container/VBoxContainer" unique_id=1660067759]
+z_index = 2
+layout_mode = 2
+texture = ExtResource("7_3g6gj")
+
+[node name="DropShadowTicket" type="Control" parent="Container" unique_id=1999714988]
+modulate = Color(0, 0, 0, 0.40392157)
+z_index = 1
+clip_contents = true
+layout_mode = 1
+anchor_left = 0.22700001
+anchor_right = 1.2270001
+anchor_bottom = 1.0
+offset_left = -67.045006
+offset_top = 12.0
+offset_right = -67.045044
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/DropShadowTicket" unique_id=593532672]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="Container/DropShadowTicket/VBoxContainer" unique_id=1294117199]
+layout_mode = 2
+texture = ExtResource("5_hgyvt")
+
+[node name="Panel" type="Panel" parent="Container/DropShadowTicket/VBoxContainer" unique_id=884565487]
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("6_c1m8x")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/DropShadowTicket/VBoxContainer/Panel" unique_id=805569983]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 512.0
+offset_bottom = 362.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ai34y")
+
+[node name="TextureRect2" type="TextureRect" parent="Container/DropShadowTicket/VBoxContainer" unique_id=557753112]
+layout_mode = 2
+texture = ExtResource("7_3g6gj")
+
+[node name="TextureRect" type="TextureRect" parent="Container" unique_id=1198695459]
+z_index = 4
+layout_mode = 0
+offset_left = 145.0
+offset_top = 33.0
+offset_right = 185.0
+offset_bottom = 75.0
+texture = ExtResource("8_c1m8x")
+
+[connection signal="pressed" from="NextButton" to="." method="_on_next_button_pressed"]

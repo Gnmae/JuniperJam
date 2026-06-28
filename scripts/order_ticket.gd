@@ -1,16 +1,12 @@
 extends Control
 
-@onready var order_header_label: Label = $NinePatchRect/VBoxContainer/OrderHeaderLabel
-@onready var cake_type_label: Label = $NinePatchRect/VBoxContainer/CakeTypeLabel
-@onready var frosting_label: Label = $NinePatchRect/VBoxContainer/FrostingLabel
-@onready var decorations_label: Label = $NinePatchRect/VBoxContainer/DecorationsLabel
-@onready var time_limit_label: Label = $NinePatchRect/VBoxContainer/TimeLimitLabel
+@onready var order_header_label: Label = $Container/VBoxContainer/Panel/VBoxContainer/OrderHeaderLabel
+@onready var cake_type_label: Label = $Container/VBoxContainer/Panel/VBoxContainer/CakeTypeLabel
+@onready var frosting_label: Label = $Container/VBoxContainer/Panel/VBoxContainer/FrostingLabel
+@onready var decorations_label: Label = $Container/VBoxContainer/Panel/VBoxContainer/DecorationsLabel
+@onready var time_limit_label: Label = $Container/VBoxContainer/Panel/VBoxContainer/TimeLimitLabel
 
 func _ready() -> void:
-	$NinePatchRect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	$NinePatchRect/VBoxContainer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	$NextButton.pressed.connect(_on_next_button_pressed)
-
 	var order := GameSession.current_order
 	if order == null:
 		push_error("OrderTicket: no current_order set in GameSession")
