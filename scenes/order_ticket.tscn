@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bpbln4b710nps" path="res://assets/sprites/ticket_top.png" id="5_hgyvt"]
 [ext_resource type="Theme" uid="uid://gpss0y3x5jbh" path="res://order_ticket_theme.tres" id="6_c1m8x"]
 [ext_resource type="Texture2D" uid="uid://vdygpqtxx7yp" path="res://assets/sprites/ticket_bot.png" id="7_3g6gj"]
+[ext_resource type="Script" uid="uid://cnhwpgff6voox" path="res://tools/cake_preview.gd" id="7_6mbos"]
 [ext_resource type="Texture2D" uid="uid://bc6i7c32fhe7b" path="res://assets/sprites/tack.png" id="8_c1m8x"]
 
 [sub_resource type="Theme" id="Theme_ai34y"]
@@ -16,6 +17,7 @@ font_size = 30
 font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_n5bth"]
+font_size = 10
 font_color = Color(0, 0, 0, 1)
 
 [node name="OrderTicket" type="Control" unique_id=542798802]
@@ -96,14 +98,15 @@ theme = ExtResource("6_c1m8x")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Container/VBoxContainer/Panel" unique_id=1037430176]
 z_index = 2
-custom_maximum_size = Vector2(-1, 320.155)
+custom_maximum_size = Vector2(-1, 258.03)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 18.0
-offset_top = 3.0
+offset_top = 28.985016
 offset_right = -191.70999
+offset_bottom = -73.984985
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_ai34y")
@@ -146,6 +149,10 @@ text = "Time Limit
 "
 label_settings = SubResource("LabelSettings_n5bth")
 
+[node name="Control" type="Control" parent="Container/VBoxContainer/Panel/VBoxContainer" unique_id=58802917]
+layout_mode = 2
+script = ExtResource("7_6mbos")
+
 [node name="TextureRect2" type="TextureRect" parent="Container/VBoxContainer" unique_id=1660067759]
 z_index = 2
 layout_mode = 2
@@ -187,8 +194,6 @@ layout_mode = 0
 offset_top = 4.0
 offset_right = 512.0
 offset_bottom = 362.0
-grow_horizontal = 2
-grow_vertical = 2
 theme = SubResource("Theme_ai34y")
 
 [node name="TextureRect2" type="TextureRect" parent="Container/DropShadowTicket/VBoxContainer" unique_id=557753112]

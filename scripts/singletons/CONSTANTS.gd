@@ -6,31 +6,30 @@ const SCENE_PATHS: Dictionary = {
 	"order_ticket": "uid://65qph7dmwyaf",
 	"cake_base_selection": "uid://bw4krn5w0jakp",
 	"top_decoration": "uid://dmsc35y2hrm1a",
-	"cake_base_option" : "uid://bkc4bjmjqe25g",
-	"spin_speed" : "uid://bp6bmverypc85",
-	"opening_scene" : "uid://cyo7hmcnjxr4o",
-	"hub" : "uid://fg43ldteyxa3",
-	"main_menu" : "uid://b2vxniec67375"
+	"cake_base_option": "uid://bkc4bjmjqe25g",
+	"spin_speed": "uid://bp6bmverypc85",
+	"opening_scene": "uid://cyo7hmcnjxr4o",
+	"hub": "uid://fg43ldteyxa3",
+	"main_menu": "uid://b2vxniec67375"
 }
 
 const DECORATION_SCENES: Dictionary = {
-	"top_decoration" : "uid://ba1jiq1ndvwhj",
-	"side_decoration" : "uid://ctwmi3l0qgbal",
+	"top_decoration": "uid://ba1jiq1ndvwhj",
+	"side_decoration": "uid://ctwmi3l0qgbal",
 	"candle": "res://scenes/decorations/candle.tscn",
-	"frosting_dollop" : "uid://cqxgshefb05yh"
+	"frosting_dollop": "uid://cqxgshefb05yh"
 }
 const FROSTING_COLORS: Array[Dictionary] = [
-	{ "id": "red",    "label": "Red",    "color": Color(0.94, 0.13, 0.15) },
-	{ "id": "orange", "label": "Orange", "color": Color(1.00, 0.50, 0.05) },
-	{ "id": "yellow", "label": "Yellow", "color": Color(0.99, 0.90, 0.08) },
-	{ "id": "green",  "label": "Green",  "color": Color(0.13, 0.75, 0.22) },
-	{ "id": "blue",   "label": "Blue",   "color": Color(0.10, 0.46, 0.98) },
-	{ "id": "indigo", "label": "Indigo", "color": Color(0.24, 0.13, 0.72) },
-	{ "id": "violet", "label": "Violet", "color": Color(0.60, 0.10, 0.85) },
+	{"id": "red", "label": "Red", "color": Color(0.94, 0.13, 0.15)},
+	{"id": "orange", "label": "Orange", "color": Color(1.00, 0.50, 0.05)},
+	{"id": "yellow", "label": "Yellow", "color": Color(0.99, 0.90, 0.08)},
+	{"id": "green", "label": "Green", "color": Color(0.13, 0.75, 0.22)},
+	{"id": "blue", "label": "Blue", "color": Color(0.10, 0.46, 0.98)},
+	{"id": "indigo", "label": "Indigo", "color": Color(0.24, 0.13, 0.72)},
+	{"id": "violet", "label": "Violet", "color": Color(0.60, 0.10, 0.85)},
 ]
 const ORDERS: Dictionary = {
-	"order_01": "res://orders/order_01.tres",
-	"order_02": "uid://0jwq38lq0vk2",
+	"order_01": "uid://1wc2u0di81mg"
 }
 
 const CAKE_BASES: Array[Dictionary] = [

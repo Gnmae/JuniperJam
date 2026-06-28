@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ce2n1aiib30pp" path="res://assets/sprites/candle_top.png" id="7_msnv4"]
 [ext_resource type="Theme" uid="uid://bgkah4u7i2od8" path="res://base_theme.tres" id="7_v8acl"]
 [ext_resource type="PackedScene" uid="uid://65qph7dmwyaf" path="res://scenes/order_ticket.tscn" id="8_pfbaa"]
+[ext_resource type="Texture2D" uid="uid://cc08pxti05jja" path="res://assets/sprites/cake_game_sprites_new.png" id="8_tjbhj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t5xhs"]
 shader = ExtResource("4_yl5fd")
@@ -36,6 +37,10 @@ radius = 275.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t5xhs"]
 bg_color = Color(0, 0.68669873, 0.6861986, 1)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjbhj"]
+atlas = ExtResource("8_tjbhj")
+region = Rect2(132, 9, 219, 187)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_hrrm1"]
 atlas = ExtResource("4_hrrm1")
 region = Rect2(676, 284, 160, 205)
@@ -46,6 +51,10 @@ region = Rect2(0, 0, 32, 32)
 
 [node name="Cake" type="Node2D" unique_id=1808201546]
 script = ExtResource("1_yl5fd")
+guide_opacity = 0.2
+guide_dashed = true
+guide_dash_length = 3
+guide_gap_length = 1
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=909115442]
 
@@ -212,33 +221,41 @@ offset_bottom = 312.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DecorationControls" unique_id=563094903]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = -1
+anchor_top = -0.63900006
+anchor_right = 1.097
 anchor_bottom = 1.0
-offset_top = -57.5
-offset_right = -12.0
+offset_left = -0.5
+offset_top = 0.010005951
+offset_right = 130.99542
 offset_bottom = 57.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.74, 0.74)
 
 [node name="ToolButton_frosting" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=1601285995]
+custom_maximum_size = Vector2(-1, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 toggle_mode = true
-texture_normal = ExtResource("3_bg1l6")
+texture_normal = SubResource("AtlasTexture_tjbhj")
+stretch_mode = 4
 
 [node name="ToolButton_cherry" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=2064204686]
+custom_maximum_size = Vector2(-1, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 toggle_mode = true
 texture_normal = SubResource("AtlasTexture_hrrm1")
+stretch_mode = 4
 
 [node name="ToolButton_candle" type="TextureButton" parent="DecorationControls/HBoxContainer" unique_id=1607915128]
+custom_minimum_size = Vector2(150, 150)
+custom_maximum_size = Vector2(-1, 150)
 layout_mode = 2
-size_flags_horizontal = 4
 toggle_mode = true
 texture_normal = ExtResource("7_msnv4")
+stretch_mode = 0
 
 [node name="OrderTicket" parent="." unique_id=542798802 instance=ExtResource("8_pfbaa")]
 visible = false

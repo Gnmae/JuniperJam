@@ -69,10 +69,12 @@ layout_mode = 2
 
 [node name="Continue" parent="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer" unique_id=564724254 instance=ExtResource("3_8ln24")]
 layout_mode = 2
+theme = ExtResource("2_8ln24")
 text = "Continue"
 
 [node name="NewGame" parent="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer" unique_id=899877153 instance=ExtResource("3_8ln24")]
 layout_mode = 2
+theme = ExtResource("2_8ln24")
 text = "New Game"
 
 [node name="OptionsButton" type="Button" parent="MainMenuUI/VBoxContainer/MarginContainer/MenuButtonsContainer" unique_id=457735673]
@@ -81,6 +83,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 offset_transform_enabled = true
+theme = ExtResource("2_8ln24")
 theme_override_font_sizes/font_size = 32
 text = "Options"
 script = ExtResource("3_rtw2f")
@@ -92,6 +95,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 offset_transform_enabled = true
+theme = ExtResource("2_8ln24")
 theme_override_font_sizes/font_size = 32
 text = "Quit
 "
@@ -123,9 +127,9 @@ text = "No"
 [node name="HeaderBackground" type="Control" parent="." unique_id=827390821]
 z_index = -1
 layout_mode = 1
-anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.36600003
+offset_bottom = -0.16801453
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2

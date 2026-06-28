@@ -15,7 +15,6 @@ extends Node2D
 @export var frosting_tolerance: float = 15.0
 
 # Order System
-@export var current_order: Order
 @export var target_color: Color = Color(1.0, 0.85, 0.3, 0.6)
 
 # Node References
@@ -43,6 +42,12 @@ extends Node2D
 @onready var decoration_pointer: Sprite2D = $DecorationPointer
 
 @onready var order_ticket: Control = $OrderTicket
+
+# Frosting Guide Visuals
+@export var guide_opacity: float = 0.7
+@export var guide_dashed: bool = false
+@export var guide_dash_length: int = 10
+@export var guide_gap_length: int = 5
 
 const POINTER_ATLAS_TILE_SIZE := 32
 var _pointer_base_texture: Texture2D = null
@@ -88,9 +93,15 @@ var decoration_accuracy: float = 0.0
 var _decoration_score_sum: float = 0.0
 var _decoration_score_count: int = 0
 
+var current_order: Order
+
 func _ready() -> void:
+	if current_order == null and GameSession.current_order != null:
+		current_order = GameSession.current_order
+	
 	if current_order == null:
-		current_order = Order.get_order("order_02")
+		push_error("No order set!")
+		return
 	apply_batter_color()
 	setup_containers()
 	setup_ui()
@@ -208,6 +219,50 @@ func _input(event: InputEvent) -> void:
 func _is_mouse_over_ui() -> bool:
 	return get_viewport().gui_get_hovered_control() != null
 
+func spawn_decoration_targets() -> void:
+	for t in decoration_targets:
+		if is_instance_valid(t):
+			t.queue_free()
+	decoration_targets.clear()
+
+	if current_order == null:
+		return
+
+	var top_decs: TopDecorations = current_order.get_top_decorations()
+	if top_decs == null:
+		return
+
+	var placements: Array[OrderDecorationDef] = top_decs.decorations
+	if placements.is_empty():
+		return
+
+	var target_scene_path: String = Constants.SCENE_PATHS.get("decoration_target", "")
+	if target_scene_path == "":
+		push_error("Missing 'decoration_target' in Constants.SCENE_PATHS")
+		return
+
+	var tex_half := 164.5
+
+	for placement in placements:
+		if placement == null or placement.id == "":
+			continue
+
+		var target: DecorationTarget = load(target_scene_path).instantiate()
+		cake_top_sprite.add_child(target)
+
+		target.position = Vector2(
+			remap(placement.position.x, 0.0, 1200.0, -tex_half, tex_half),
+			remap(placement.position.y, 0.0, 300.0, -tex_half, tex_half)
+		)
+		target.rotation_degrees = placement.rotation_degrees
+		target.scale = placement.scale
+
+		target.setup(placement)
+		target.set_meta("decoration_id", placement.id)
+		target.set_meta("is_target", true)
+
+		decoration_targets.append(target)
+
 func _drop_decoration(tool_def: Dictionary) -> void:
 	if _is_mouse_over_ui():
 		return
@@ -220,7 +275,11 @@ func _drop_decoration(tool_def: Dictionary) -> void:
 	get_parent().add_child(item)
 	item.setup(dec_data, cake_top_sprite)
 	item.start_fall(get_global_mouse_position())
-
+	print("[Drop] dropped %s at global: %s, cake_top local: %s" % [
+		tool_def.id,
+		get_global_mouse_position(),
+		cake_top_sprite.to_local(get_global_mouse_position())
+	])
 func _on_plate_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		if spin_toggle_button and spin_toggle_button.button_pressed:
@@ -416,7 +475,6 @@ func update_phase_label() -> void:
 		_:
 			phase_label.text = "UNKNOWN"
 
-# FROSTING GUIDE LINES
 func _setup_frosting_guide() -> void:
 	for l in _guide_lines:
 		if is_instance_valid(l):
@@ -428,32 +486,68 @@ func _setup_frosting_guide() -> void:
 
 	if current_order == null:
 		return
-	var top_decs = current_order.get_top_decorations()
+
+	var top_decs: TopDecorations = current_order.get_top_decorations()
 	if top_decs == null:
 		return
 
-	for path in top_decs.frosting_paths:
-		if path.points.size() < 2:
+	var paths: Array[PathPlacement] = top_decs.frosting_paths
+	if paths.is_empty():
+		return
+
+	for i in range(paths.size()):
+		var path = paths[i]
+		var pts := path.get_points()
+		if pts.size() < 2:
 			continue
+
 		var world_pts := PackedVector2Array()
-		for p in path.points:
+		for p in pts:
 			world_pts.append(path.origin + p)
-		var line := Line2D.new()
-		line.name = "FrostingGuide"
-		line.points = world_pts
+
 		if path.closed and world_pts.size() > 0:
-			line.add_point(world_pts[0])
-		line.width = path.width
-		line.default_color = Color(path.color.r, path.color.g, path.color.b, 0.4)
-		line.z_index = 2
-		cake_top_sprite.add_child(line)
-		_guide_lines.append(line)
+			world_pts.append(world_pts[0])
+
+		var guide_color := path.get_color()
+		guide_color.a = guide_opacity
+		var line_width : int= max(path.width, 8.0)
+
+		if guide_dashed:
+			var draw := true
+			var seg_start := 0
+			while seg_start < world_pts.size() - 1:
+				var seg_end := mini(seg_start + guide_dash_length, world_pts.size() - 1)
+				if draw:
+					var dash := Line2D.new()
+					dash.name = "FrostingGuide_%d_dash_%d" % [i, seg_start]
+					dash.points = world_pts.slice(seg_start, seg_end + 1)
+					dash.width = line_width
+					dash.default_color = guide_color
+					dash.z_index = 4
+					dash.z_as_relative = false
+					dash.antialiased = true
+					cake_top_sprite.add_child(dash)
+					_guide_lines.append(dash)
+				seg_start += guide_dash_length if draw else guide_gap_length
+				draw = not draw
+		else:
+			var line := Line2D.new()
+			line.name = "FrostingGuide_" + str(i)
+			line.points = world_pts
+			line.width = line_width
+			line.default_color = guide_color
+			line.z_index = 4
+			line.z_as_relative = false
+			line.antialiased = true
+			cake_top_sprite.add_child(line)
+			_guide_lines.append(line)
+
 		var segs := PackedVector2Array()
 		var count := world_pts.size()
 		var limit := count - 1 if not path.closed else count
-		for i in range(limit):
-			segs.append(world_pts[i])
-			segs.append(world_pts[(i + 1) % count])
+		for j in range(limit):
+			segs.append(world_pts[j])
+			segs.append(world_pts[(j + 1) % count])
 		_baked_segments.append(segs)
 
 # FROSTING ACCURACY
@@ -624,49 +718,6 @@ func _on_top_decoration_finished() -> void:
 		order_id = GameSession.current_order.id
 
 	GameSession.complete_order(order_id, final_score)
-func spawn_decoration_targets() -> void:
-	for t in decoration_targets:
-		if is_instance_valid(t):
-			t.queue_free()
-	decoration_targets.clear()
-
-	if current_order == null:
-		return
-
-	var top_decs = current_order.get_top_decorations()
-	if top_decs == null:
-		return
-
-	var placements: Array = []
-	if "decorations" in top_decs:
-		placements = top_decs.decorations
-	elif top_decs.has_method("get_decorations"):
-		placements = top_decs.get_decorations()
-
-	if placements.is_empty():
-		return
-
-	var target_scene_path: String = Constants.SCENE_PATHS.get("decoration_target", "")
-	if target_scene_path == "":
-		push_error("Missing 'decoration_target' in Constants.SCENE_PATHS")
-		return
-
-	for placement in placements:
-		if placement == null or placement.id == "":
-			continue
-
-		var target : DecorationTarget = load(target_scene_path).instantiate()
-		cake_top_sprite.add_child(target)
-
-		target.position = placement.position
-		target.rotation_degrees = placement.rotation_degrees
-		target.scale = placement.scale
-
-		target.setup(placement)                    # Pass the DecorationPlacement directly
-
-		target.set_meta("decoration_id", placement.id)
-		target.set_meta("is_target", true)
-		decoration_targets.append(target)
 
 # UI CALLBACKS
 func _on_speed_slider_changed(value: float) -> void:

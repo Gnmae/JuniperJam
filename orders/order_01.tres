@@ -1,42 +1,30 @@
 [gd_resource type="Resource" script_class="Order" format=3 uid="uid://1wc2u0di81mg"]
 
 [ext_resource type="Script" uid="uid://bt5w2qxhur6ni" path="res://resources/order.gd" id="1_tanqh"]
-[ext_resource type="Script" uid="uid://cswvdqpj5qvt1" path="res://resources/decoration_placement.gd" id="2_xit6o"]
 [ext_resource type="Script" uid="uid://bpmiolsmmanfw" path="res://resources/dot_placement.gd" id="3_usqo1"]
 [ext_resource type="Script" uid="uid://b2kb2b7ba6qri" path="res://resources/path_placement.gd" id="4_3njm6"]
-[ext_resource type="Resource" uid="uid://7tybtb7ae1tu" path="res://resources/orders/frosting_paths/side/side_sine_wave.tres" id="4_xug0e"]
-[ext_resource type="Script" uid="uid://dyavqgx1nlq8o" path="res://resources/SideDecorations.gd" id="5_hcjpc"]
+[ext_resource type="Resource" uid="uid://d25lqxr3k1t4e" path="res://resources/orders/frosting_paths/sine_circle_path.tres" id="5_usqo1"]
 [ext_resource type="Script" uid="uid://cdr7mm2qje1o5" path="res://resources/top_decorations.gd" id="5_xug0e"]
+[ext_resource type="Script" uid="uid://caysiqfq2m6rx" path="res://resources/order_decoration_def.gd" id="6_xug0e"]
 
-[sub_resource type="Resource" id="Resource_ifm77"]
-script = ExtResource("2_xit6o")
-position = Vector2(8.94, 0)
-metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
+[sub_resource type="Resource" id="Resource_pjjkr"]
+script = ExtResource("6_xug0e")
+metadata/_custom_type_script = "uid://caysiqfq2m6rx"
 
-[sub_resource type="Resource" id="Resource_ymeay"]
-script = ExtResource("5_hcjpc")
-frosting_paths = Array[ExtResource("4_3njm6")]([ExtResource("4_xug0e")])
-decorations = Array[ExtResource("2_xit6o")]([SubResource("Resource_ifm77")])
-metadata/_custom_type_script = "uid://dyavqgx1nlq8o"
+[sub_resource type="Resource" id="Resource_h5kca"]
+script = ExtResource("6_xug0e")
+position = Vector2(400, 80)
+metadata/_custom_type_script = "uid://caysiqfq2m6rx"
 
-[sub_resource type="Resource" id="Resource_xit6o"]
-script = ExtResource("2_xit6o")
-position = Vector2(-50, 10)
-metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
-
-[sub_resource type="Resource" id="Resource_usqo1"]
-script = ExtResource("2_xit6o")
-position = Vector2(20, 10)
-metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
-
-[sub_resource type="Resource" id="Resource_3njm6"]
-script = ExtResource("2_xit6o")
-position = Vector2(50, 10)
-metadata/_custom_type_script = "uid://cswvdqpj5qvt1"
+[sub_resource type="Resource" id="Resource_qplkk"]
+script = ExtResource("6_xug0e")
+position = Vector2(900, 80)
+metadata/_custom_type_script = "uid://caysiqfq2m6rx"
 
 [sub_resource type="Resource" id="Resource_xug0e"]
 script = ExtResource("5_xug0e")
-decorations = Array[ExtResource("2_xit6o")]([SubResource("Resource_xit6o"), SubResource("Resource_usqo1"), SubResource("Resource_3njm6")])
+frosting_paths = Array[ExtResource("4_3njm6")]([ExtResource("5_usqo1")])
+decorations = Array[ExtResource("6_xug0e")]([SubResource("Resource_pjjkr"), SubResource("Resource_h5kca"), SubResource("Resource_qplkk")])
 metadata/_custom_type_script = "uid://cdr7mm2qje1o5"
 
 [resource]
@@ -44,5 +32,4 @@ script = ExtResource("1_tanqh")
 customer_name = "Gweedar"
 cake_batter_type = "yellow_sponge"
 top_decorations = SubResource("Resource_xug0e")
-side_decoration = SubResource("Resource_ymeay")
 metadata/_custom_type_script = "uid://bt5w2qxhur6ni"

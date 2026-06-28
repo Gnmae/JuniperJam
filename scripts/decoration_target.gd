@@ -3,5 +3,7 @@ extends Node2D
 
 var decoration_id: String = ""
 
-func setup(dec: DecorationPlacement) -> void:
-	decoration_id = dec.id
+func setup(placement: OrderDecorationDef) -> void:
+	if placement == null:
+		return
+	decoration_id = placement.id
