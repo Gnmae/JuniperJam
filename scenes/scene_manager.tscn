@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://ccedm5b0qyu4v" path="res://scripts/sound_manager.gd" id="2_q7wi7"]
 [ext_resource type="AudioStream" uid="uid://djp6wd02terb5" path="res://assets/sounds/keystroke_sound.wav" id="3_6k21d"]
 [ext_resource type="AudioStream" uid="uid://cjtmvj1xm6es1" path="res://assets/sounds/chutter_click.wav" id="4_cjhpt"]
-[ext_resource type="AudioStream" uid="uid://behvujoa51jnw" path="res://assets/sounds/mouse_click.wav" id="5_q7wi7"]
+[ext_resource type="AudioStream" uid="uid://behvujoa51jnw" path="res://assets/sounds/mouse_click.wav" id="5_mclck"]
 [ext_resource type="AudioStream" uid="uid://dpp6l2lxmq3bs" path="res://assets/sounds/swish_sound.wav" id="6_hhobr"]
 [ext_resource type="AudioStream" uid="uid://cge1vu0k1knvh" path="res://assets/sounds/plate_spinning_sound.wav" id="7_wofdf"]
 [ext_resource type="AudioStream" uid="uid://b2g8v1cyfnn5v" path="res://assets/sounds/ticking_sound.wav" id="8_kad1h"]
@@ -22,7 +22,7 @@ stream_0/stream = ExtResource("4_cjhpt")
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_05ayi"]
 random_pitch = 1.0594631
 streams_count = 1
-stream_0/stream = ExtResource("5_q7wi7")
+stream_0/stream = ExtResource("5_mclck")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2lhpl"]
 random_pitch = 1.0594631
@@ -51,7 +51,7 @@ mouse_filter = 1
 script = ExtResource("2_q7wi7")
 
 [node name="KeystrokeSound" type="AudioStreamPlayer" parent="SoundManager" unique_id=1219575738]
-stream = SubResource("AudioStreamRandomizer_4sjmi")
+stream = SubResource("AudioStreamRandomizer_6k21d")
 max_polyphony = 3
 bus = &"Sounds"
 
